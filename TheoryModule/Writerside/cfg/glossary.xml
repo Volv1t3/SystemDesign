@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE terms SYSTEM "https://resources.jetbrains.com/writerside/1.0/glossary.dtd">
+<terms>
+    <term name="Encapsulation">
+            Encapsulation is the process of bundling data and methods that operate on this data into a single unit,
+            typically a class.
+            It restricts direct access to certain components, providing controlled interaction through methods.
+            This ensures data integrity and security by preventing unintended interference or misuse.
+            Unlike abstraction, which focuses on hiding implementation details, encapsulation emphasizes restricting
+            access and bundling data logically.
+    </term>
+    <term name="Abstraction">
+        Abstraction is the process of simplifying complex systems by modeling classes based on essential
+        characteristics,
+        while hiding irrelevant details.
+        It focuses on defining interfaces or abstract concepts, enabling users to interact with the system without
+        exposing internal implementation complexities.
+        Through abstraction, developers can create reusable and extendable code by working with generalized ideas
+        instead of specific implementations.
+        This approach promotes modularity and separation of concerns, allowing for easier maintenance and scalability.
+    </term>
+    <term name="Inheritance">
+            Inheritance is a fundamental principle of object-oriented programming that allows a class (child class) to
+            inherit
+            properties and methods from another class (parent class). It promotes code reuse by enabling the creation of
+            new
+            classes based on existing ones, while allowing extensions or modifications to the inherited behavior.
+            Inheritance establishes a hierarchical relationship between classes, supporting polymorphism and method
+            overriding.
+            This concept simplifies code maintenance and enhances readability by reducing redundancy.
+            However, it should be applied carefully to avoid overly complex and tightly coupled class structures.
+        </term>
+
+    <term name="Polymorphism">
+        Polymorphism is an object-oriented programming concept that allows objects to be treated as instances
+        of their parent class while enabling method behavior to vary based on the actual object's type.
+        It supports method overriding and method overloading, ensuring flexibility and extensibility in code.
+        Polymorphism promotes code reuse by allowing one interface to represent multiple underlying forms,
+        making programs more dynamic and easier to maintain.
+    </term>
+
+    <term name="Semantic">
+        In the context of association in object-oriented programming, "semantic" refers to the meaning
+        or significance of the relationship between objects. It defines the purpose and intent behind
+        how objects are related or interact with one another, ensuring that their connections accurately
+        reflect real-world or domain-specific concepts. Understanding the semantic aspect of an association
+        helps clarify the logical purpose and proper use of the relationship in the system's design.
+    </term>
+    <term name="Domain Modeling">
+        In the context of OOD, domain modeling is the process through which
+
+
+    </term>
+</terms>

@@ -1,0 +1,108 @@
+classDiagram
+    direction TB
+%% Abstract base classes
+    class Person {
+        <<abstract>>
+        -String nombre
+        -String apellido
+        -String email
+        -String celular
+        -Genero genero
+        +abstract String toString()
+    }
+
+    class Empleado {
+        <<abstract>>
+        -double salario
+        -double bonificacion
+        -Departamento departamento
+    }
+
+%% Concrete classes
+    class PersonalIT {
+        -String especialidad
+        +toString()
+    }
+
+    class PersonalLegal {
+        -String especialidad
+        -String numeroLicencia
+        +toString()
+    }
+
+    class Cliente {
+        -TipoCliente tipo
+        -String nombreCliente
+        +toString()
+    }
+
+    class Reunion {
+        -LocalDateTime fechaHora
+        -int duracion
+        -List~Person~ participantes
+        -String ubicacion
+        -EstadoReunion estado
+        +toString()
+    }
+
+    class Reuniones {
+        -ArrayList~Reunion~ reuniones
+        +agregarReunion()
+        +eliminarReunion()
+        +revisarConflictos()
+        +toString()
+    }
+
+%% Main class
+    class Main {
+        +main(String[] args)
+    }
+
+%% Interface
+    class Scheduler {
+        <<interface>>
+        +agregarReunion()
+        +eliminarReunion()
+        +revisarConflictos()
+        +imprimirReuniones()
+    }
+
+%% Enumerations
+    class Genero {
+        <<enumeration>>
+        MASCULINO
+        FEMENINO
+        OTRO
+    }
+
+    class Departamento {
+        <<enumeration>>
+        IT
+        LEGAL
+        ADMINISTRATIVO
+    }
+
+    class TipoCliente {
+        <<enumeration>>
+        PERSONA_NATURAL
+        CLIENTE_EMPRESARIAL
+    }
+
+    class EstadoReunion {
+        <<enumeration>>
+        AGENDADA
+        COMPLETADA
+        CANCELADA
+        ATRASADA
+    }
+
+%% Relationships
+    Person <|-- Empleado: extends
+    Person <|-- Cliente: extends
+    Empleado <|-- PersonalIT: extends
+    Empleado <|-- PersonalLegal: extends
+    Scheduler <|.. Reuniones: implements
+    Main --> Reuniones: uses
+    Main --> PersonalIT: uses
+    Main --> PersonalLegal: uses
+    Main --> Cliente: uses

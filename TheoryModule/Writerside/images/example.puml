@@ -1,0 +1,41 @@
+@startuml
+!include <tupadr3/common>
+!include <office/Servers/database_server>
+skinparam rectangle2 {
+    BorderColor gray
+    BorderStyle dashed
+    backgroundColor lightgray
+}
+
+actor User
+actor Administrator
+'database name, representation name'
+OFF_DATABASE_SERVER( db,"Product \nStorage\nDatabase")
+User <|-r- Administrator
+
+'This defines a comment'
+
+rectangle "Purchase Management System"  {
+
+    usecase "Returning Purchased Items from \n Customer Order Post Sale" as MC01
+    usecase "Voiding Customer Order Post Sale" as MC02
+    usecase "Modifying Customer Order" as MCBASE
+    usecase "Validate Order ID" as VID
+    usecase "Process Database Item Return" as PDB
+
+
+}
+
+MCBASE <|-[dashed]- MC01 : "<< extends >>"
+MCBASE <|-[dashed]- MC02 : "<< extends >>"
+MCBASE <-[dashed]r- VID : "<< include >>"
+MC01 -[dashed]-> PDB : "<< include >>"
+MC02 -[dashed]-> PDB : "<< include >>"
+db -l- PDB
+'Main Connectivity Method'
+Administrator -r- MCBASE
+@enduml
+
+@startuml
+state hello
+@enduml
