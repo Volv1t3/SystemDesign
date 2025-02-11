@@ -7,6 +7,21 @@
 > It is separated into various sections detailing all content related to the project specification and 
 > realization.
 
+<note><p>The following is information related to te project, group names and identifiers, etc.
+</p>
+<list>
+<li><b><format color="Orange">Assignment Name</format></b>: 
+ [Project One: Pizza Delivery System],
+</li> 
+<li><b><format color="Orange">Group Members</format></b>: [
+<list type="none">
+<li><b><format color="Orange">Marcos Lopez Pazmiño</format></b> [00332617],</li> 
+<li><b><format color="Orange"> Carlos Flores Villacis</format></b> [00329746], </li> 
+<li><b><format color="Orange">Santiago Arellano Jaramillo</format></b> [00328370],</li> 
+</list>
+]
+</li></list>
+</note>
 
 ## Domain Modeling Process
 <p>The following subsections contain the information produced, analyzed, and iterated over to define a domain model 
@@ -963,6 +978,24 @@ usage, pizza purchasing patterns, etc., all in an effort to increase productivit
 <def title="Pizza Item">
 <p>A synonym used to refer to those ingredients that are put on top of the pizza dough during the making of a pizza. 
 It is a crucial part of Storage Services and Customer Preferences</p>
-
 </def>
 </deflist>
+
+### Annex C ― Out of Scope Features
+<p>Due to the volumetric complexity of the task at hand, i.e., designing an entire system from 
+the ground up, and the need to keep it both language agnostic and implementation agnostic, we 
+have decided that some sections of information that, in a real world design would be required, 
+outside of the original file.</p>
+<p>One of the main considerations that we took here was that our system should focus on the 
+original specification and only build upon it to a certain extent. Our idea is not to build an 
+entire application from scratch and cover all possible avenues in user authentication for 
+example. In our case we consider it and acknowledge that it is important as a use case and 
+component of the system, but we are not focusing on it as the core of the program is the 
+AI-driven forecasting services and the pizza delivery system. We decided against expanding our 
+actors, use cases and requirements too much as this would lead to inconsistent work, and 
+lengthy workflows that fall outside the time limit for this project</p>
+<p>Rather, we chose to focus on the basics and make the application correct from its building 
+blocks, while also allowing ourselves breathing room for future expansion and modification. As 
+with everything in software, this architecture we have devised is not set in stone, rather we 
+hope it keeps expanding and adapting to new ideas.</p>
+
