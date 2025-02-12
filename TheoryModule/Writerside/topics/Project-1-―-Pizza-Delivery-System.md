@@ -549,26 +549,27 @@ Guest (Non-registered Account user).</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definition</format></b>: <i>ORDMA04, 
 ORDMA04-01, ORDMA04-02, ORDMA05, ORDMA05-01, ORDMA05-02, ORDMA05-03</i></li> 
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: <p>
-A customer accesses the system's web interface and views available pizza menus (popular 
+A customer accesses  <i><code>"My Shopping Cart"</code></i> tab within the system's web interface 
+and views available pizza menus (popular 
 combinations, preconfigured options, and <i><code>"Create your Own Pizza"</code></i> menu) 
-in the <i><code>"My Shopping Cart"</code></i> tab, selects one, and proceeds to 
+. The customer selects one menu. Then the customer configures, or selects a pizza (at which point 
+the system checks for 
+ingredient availability in storage), and proceeds to 
 the <i><code>"Configure Your Order"</code></i> tab to specify details like crust and size.  The 
 system confirms the 
-order, updates the total in the <i><code>"Shopping Cart Contents"</code></i> tab, and allows the 
-customer to 
-continue or cancel.
+<b>order</b>, updates the total in the <i><code>"Shopping Cart Contents"</code></i> tab, and allows 
+the 
+customer to continue or cancel.
 </p></li> 
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: <p>
 During the customer’s shopping cart modification, if the system detects that one or more 
 ingredients are unavailable or low on stock, it will alert the customer through an <b>on-screen 
 popup</b> and suggest 
-alternative ingredients to use based on the available ones in the customer’s pizza. If the client attempts 
-to make more than one pizza modification concurrently, the system will inform the customer and 
-block additional modifications until the opened modifications are done. 
+alternative <b>ingredients</b> to use based on the available ones in the customer’s <b>pizza</b>.
 </p></li> 
 </list>
 
-<img alt="UpdateShoppingCartItemsCorrected.png" src="UpdateShoppingCartItemsCorrected.png" thumbnail="true"/>
+<img alt="UpdateShoppingCartItems.png" src="UpdateShoppingCartItems.png" thumbnail="true"/>
 </def>
 <def title="Place Pizza Order">
 <list>
@@ -577,16 +578,16 @@ ORDMA02, ORDMA03, ORDMA04, ORDMA05, ORDMA06, ORDMA07, DELMA02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: <p>
 After modifying their shopping cart, the customer proceeds to the <i><code>"Review Your Order"</code></i> tab to 
 review, modify, or cancel their order.  Choosing to continue, the system moves the user to a 
-<i><code>"Checkout"</code></i> tab, and the customer provides a delivery address, which is internally verified.  
-Next, they select a payment method, which is also validated internally. Upon successful payment 
+<i><code>"Checkout"</code></i> tab, and the customer provides a <b>delivery address</b>, which is internally verified.  
+Next, they select a <b>payment method</b>, which is also validated internally. Upon successful payment 
 validation, the system processes the payment, sends an order confirmation notification, and 
-internally notifies stakeholders to begin order tracking.  The system then tracks the order and 
-provides live map updates to the customer.
+internally notifies stakeholders to begin order <b>tracking</b>.  The system then tracks the order 
+and provides live map updates to the customer.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: <p>
 During checkout, the customer's delivery address might be outside a delivery radius for the pizza
 delivery system, at which point the system informs the customer of the issue and requests a different
-delivery address. During payment processing, if the payment service fails to validate the customer's
+delivery address. During payment processing, if the <b>payment service</b> fails to validate the customer's
 payment information, the system will inform the customer of this error and request another payment
 method to be used. Once the order is confirmed, the delivery drivers in a customer's area might all be
 busy, at which point the system informs the user of this issue and provides a temporary GPS tracking
@@ -601,7 +602,7 @@ map page.
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA02, DELMA02-01, DELMA02-02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-If the customer has an active order in the system, the customer can accesses their active 
+If the customer has an active <b>order</b> in the system, the customer can accesses their active 
 order details through the <i><code>"Track My Order"</code></i> tab in the system's web interface. 
 The system displays the status of 
 their order, displaying an internal flag to the user if the order is still in the kitchen. Once 
@@ -612,7 +613,7 @@ reached.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
-In the off chance the GPS tracking system becomes temporarily unavailable, the system will fall 
+In the off chance the <b>GPS tracking system</b> becomes temporarily unavailable, the system will fall 
 back to a milestone status update, without the real-time location tracking ability it normally 
 displays. The system then will roll back to a simple interface, showing the ETA and current 
 milestone. Based on delivery driver route changes, the system recalculates the ETA information 
@@ -621,6 +622,7 @@ queue changes such that synchronization is never lost until the user reconnects 
 network.
 </p></li>
 </list>
+
 <img alt="TrackActiveOrderStatus.png" src="TrackActiveOrderStatus.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -661,9 +663,10 @@ before proceeding with the order.
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA02, ACCMA03</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The customer can accesses their account settings in the <i><code>"My account 
+The customer accesses their account settings in the <i><code>"My account 
 information"</code></i> tab within the 
-system’s web interface and selects the <i><code>"Stored Payment Methods"</code></i> tab, where 
+system’s web interface. The customer selects the <i><code>"Stored Payment Methods"</code></i> tab, 
+where 
 the system displays stored payment methods. The customer can modify, remove, update, or add 
 methods. When removing a payment method, the system requests confirmation from the customer 
 before removing it. On any other case, the system requests the new information, internally 
@@ -671,16 +674,15 @@ reviews and validates the information, and asks the customer to confirm the chan
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
-If the internal payment method validation fails, the system informs the customer of the specific 
+If the internal <b>payment method validation</b> fails, the system informs the customer of the specific 
 error, including the information that caused the error, and requests correction. When attempting 
 to remove a payment method that is set as default, the system requires the customer to select a 
-new default method first. If a payment method is currently associated with an active order, the 
+new default method first. If a <b>payment method</b> is currently associated with an active <b>order</b>, the 
 system prevents its removal and notifies the customer of the significance of this payment method 
 in the system at that moment. In cases where the customer attempts to add a payment method that 
 already exists, the system prompts them to update the existing entry instead.
 </p></li>
 </list>
-
 <img alt="ManagePaymentMethods.png" src="ManagePaymentMethods.png" thumbnail="true"/>
 </def>
 <def title="Manage User Defined information">
@@ -689,23 +691,23 @@ already exists, the system prompts them to update the existing entry instead.
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
 The user accesses their online account setting through the <i><code>"My account 
-information"</code></i> tab in the system's web interfaces, then the customer access the 
+information"</code></i> tab in the system's web interface, then the customer access the 
 <i><code>"Manage my Preferences"</code></i> tab. the system displays account information 
-(excluding payment methods), such as billing details, delivery addresses, purchase history, and preferences. 
+(excluding payment methods), such as billing details, <b>delivery addresses</b>, <b>purchase 
+history</b>, and <b>preferences</b>. 
 . The customer can add, modify, or remove information. The customer 
 then selects an option and follows the indicated steps on the screen. Changes are validated (for 
-addresses and billing) or directly stored (for personal information).
+<b>addresses</b> and billing) or directly stored (for personal information).
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
 If any validation fails (invalid address, incorrect phone format, etc.), the system highlights 
 the specific fields needing correction and provides guidance on proper format. When attempting 
-to remove a primary delivery address, the system requires the customer to designate a new 
+to remove a primary <b>delivery address</b>, the system requires the customer to designate a new 
 primary address first. If the customer tries to update information that is currently being used 
 for an active order, the system warns that changes will not affect the current order.
 </p></li>
 </list>
-
 <img alt="ManageUserDefinedInformation.png" src="ManageUserDefinedInformation.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -820,6 +822,7 @@ system will suggest
 alternative dates or modifications. 
 </p></li>
 </list>
+
 <img alt="ManagePromotionalCampaigns.png" src="ManagePromotionalCampaigns.png" thumbnail="true"/>
 </def>
 <def title="Update Ingredient Information">
@@ -843,7 +846,7 @@ for picking up later.
 </p></li>
 </list>
 
-<img alt="UpdaeIngredientInformation.png" src="UpdaeIngredientInformation.png" thumbnail="true"/>
+<img alt="UpdateIngredientInformation.png" src="UpdateIngredientInformation.png" thumbnail="true"/>
 </def>
 <def title="Manage Menu Categories">
 <list>
@@ -894,7 +897,7 @@ ordering, the system requires additional approval levels before proceeding.
 </p></li>
 </list>
 
-<img alt="ProcessBulkOrders.png" src="ProcessBulkOrders.png" thumbnail="true"/>
+<img alt="ProcessBulkOrder.png" src="ProcessBulkOrder.png" thumbnail="true"/>
 </def>
 <def title="Configure Storage Alerts">
 <list>
@@ -942,8 +945,7 @@ configurations while flagging items for review.
 </p></li>
 </list>
 
-<img alt="ProcessAIIngredientUsageReport.png" src="ProcessAIIngredientUsageReport.png" 
-thumbnail="true"/>
+<img alt="ProcessAIIngredientReport.png" src="ProcessAIIngredientReport.png" thumbnail="true"/>
 </def>
 <def title="Process AI Inventory Forecast Report">
 <list>
@@ -952,7 +954,7 @@ thumbnail="true"/>
 <p>The warehouse manager accesses the <i><code>"Inventory Management"</code></i> dashboard 
 through the system's web interface. The warehouse manager retrieves the AI-generated inventory 
 forecast report from the 
-InventoryForecastService.  The warehouse manager analyzes this against real-time and historical 
+<b>InventoryForecastService</b>.  The warehouse manager analyzes this against real-time and historical 
 data, 
 adjusting 
 storage allocations, order schedules, and inventory thresholds.  The system periodically saves 
@@ -982,9 +984,9 @@ Specialization) actor</p>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
 The delivery manager accesses <i><code>"Configure Delivery Zones"</code></i> dashboard through 
-the system's web interface and views current delivery zone boundaries. They analyze coverage 
+the system's web interface and views current <b>delivery zone</b> boundaries. They analyze coverage 
 data and traffic patterns for each zone based on an <b>AI-driven report</b> provided by the 
-DelliveryForecastService . Based on this 
+<b>DeliveryForecastService</b> . Based on this 
 analysis, they adjust zone boundaries, update delivery fees, and modify service areas.  The 
 system validates the changes for gaps and overlaps. After manager confirmation, the system 
 updates the zone configurations and logs all changes.
@@ -994,9 +996,7 @@ updates the zone configurations and logs all changes.
 If proposed changes create coverage gaps, the system alerts the manager and suggests boundary 
 adjustments. When fee changes exceed predetermined thresholds, the system requires additional 
 approval. If traffic pattern data is unavailable for certain areas, the system uses historical 
-delivery data for recommendations. A delivery manager defines and updates delivery zone 
-boundaries, setting service areas and delivery fees based on distance and traffic patterns, 
-ensuring optimal coverage.
+delivery data for recommendations. 
 </p></li>
 </list>
 
@@ -1035,9 +1035,9 @@ Specialization) actor</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA09, ACCMA05</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p> The customer manager accesses the <i><code>"Security Reports"</code></i> dashboard through 
-the system's web interface. The dashboard shows alerts from the SecurityManagerSubsystem about 
+the system's web interface. The dashboard shows alerts from the <b>SecurityManagerSubsystem</b> about 
 suspicious customer behavior. After reviewing the report (login patterns, transaction history, 
-flagged behaviors), they contact the customer for verification or implement security measures, 
+flagged behaviors), they contact the <b>customer</b> for verification or implement security measures, 
 as needed. The system logs all actions and updates the account status.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
@@ -1049,7 +1049,7 @@ the most up-to-date information, even if the customer manager did not save any c
 </p></li>
 </list>
 
-<img alt="processCustomerSecurityReports.png" src="processCustomerSecurityReports.png" thumbnail="true"/>
+<img alt="ProcessCustomerSecurityReports.png" src="ProcessCustomerSecurityReports.png" thumbnail="true"/>
 </def>
 <def title="Process Refund Requests">
 <list>
@@ -1075,7 +1075,7 @@ system errors, it will notify the customer manager for further action.
 </p></li>
 </list>
 
-<img alt="ProcessRefundRequest.png" src="ProcessRefundRequest.png" thumbnail="true"/>
+<img alt="ProcessRefundRequests.png" src="ProcessRefundRequests.png" thumbnail="true"/>
 </def>
 </deflist>
 </def>
@@ -1271,6 +1271,8 @@ system’s storage, once validated the user is alerted of this and allowed into 
 </def>
 
 <def title="Log Administrative Content Change">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
 The administrator specialization accesses their respective portals. Once logged in, they attempt 
 to perform changes on the internal system represented through their portals. The system logs all 
@@ -1278,6 +1280,18 @@ administrative content changes regardless of their access level in a separate in
 Once all changes have been performed by an administrator specialization, the system stops 
 recording the log until further action is taken. 
 </p>
+</li> </list>
+</def>
+<def title="Customer Already Logged In">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>The Customer already accessed the <i><code>"Sign In"</code></i> menu within the system's web 
+interface. The customer's credentials have been validated by the SecurityManager. A log of the 
+login attempt and success has been stored and sent to the CustomerManagerSubSystem. The customer 
+is allowed in to Customer-only menus.
+</p>
+</li> 
+</list>
 </def>
 
 </deflist>
