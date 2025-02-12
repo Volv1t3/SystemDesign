@@ -275,8 +275,8 @@ purposes.
         </tr>
         <tr>
             <td>ACCMA02</td>
-            <td>Customer Registration Allows Prefference Storage</td>
-            <td>The system should allow a registered user to input prefferences on shipping, billing, and payment methods, such that the information is not re-entered again.</td>
+            <td>Customer Registration Allows Preference Storage</td>
+            <td>The system should allow a registered user to input preferences on shipping, billing, and payment methods, such that the information is not re-entered again.</td>
         </tr>
         <tr>
             <td>ACCMA03</td>
@@ -327,12 +327,13 @@ and any support tickets that the user might open during the existence of their a
             <td>AI Service Authentication And Connection</td>
             <td>To leverage the data the system will produce from drivers, deliveries, and inventories, it must include and maintain a connection to various AI service providers. 
             <br/>
-            -To this end it must maintain secure practices, including token amangement and access validation, ensuring reliable and real-time connectivity to these services securely</td>
+            -To this end it must maintain secure practices, including token management and access validation, ensuring reliable and real-time connectivity to these services securely</td>
         </tr>
         <tr>
             <td>AISMA02</td>
             <td>AI Service Connection—Delivery Route Prediction</td>
-            <td>The system must provide, in combination with the data it produces from deliveries, drivers, and GPS 
+            <td>The system must provide, in combination with the data it produces from deliveries, 
+            drivers, and GPS 
 systems, and the connection with AI services it must have,
 a series of AI-driven delivery route optimization algorithms and models</td>
         </tr>
@@ -480,9 +481,9 @@ notions to all parameters, classes, and their interconnections as defined in all
 </p>
 
 <deflist>
-<def title="Design Artifact: 'Pizza Delivery Service | Domain Model`">
+<def title="Design Artifact: 'Pizza Delivery Service | Domain Model'">
 
-<img alt="DesignArtifactFive.png" src="DesignArtifactFive.png" thumbnail="true"/>
+<img alt="DeliveryAritfactFiveCorrected.png" src="DesignArtifactFive.png" thumbnail="true"/>
 </def>
 </deflist>
 <note>All class parameters are explained in a separated listing provided in the Appendix of this webpage, where a 
@@ -519,10 +520,11 @@ Manager). It is at this point that we must point out a key design choice taken w
 architecture and the use case definitions presented here.
 </p>
 <note><p>In all administrative use cases, there will be times when the reader might 
-encounter both <i><b><code>ContentManager and Content Manager</code></b></i>, in terms of the 
+encounter both <i><b><code>ContentManagerSubSystem and Content Manager</code></b></i>, in terms of 
+the 
 <b>domain model</b>, these two refer to the same component within our architecture. However, the 
 distinction between the names is done to emphasize the distinction between 
-<b><code>ContentManager (the internal content management system programmatically defined 
+<b><code>ContentManagerSubSystem (the internal content management system programmatically defined 
 and only modified indirectly), with Content Manager (a real human manager in charge of 
 supervising the content management operations and modify the system to produce valuable 
 business outcomes)</code></b>. This distinction can be found in almost all administrative level 
@@ -547,45 +549,39 @@ Guest (Non-registered Account user).</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definition</format></b>: <i>ORDMA04, 
 ORDMA04-01, ORDMA04-02, ORDMA05, ORDMA05-01, ORDMA05-02, ORDMA05-03</i></li> 
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: <p>
-A customer accesses the individual’s shopping cart through the system’s web interface. The 
-system, then, shows all available menu options to append pizzas to the customers’ orders, 
-including popular combinations, and the option to create an original pizza personalizing all 
-attributes at once. The client selects an option and proceeds to configure or choose a pizza 
-(depending on the chosen option), before moving to a secondary configuration step to define 
-crust type or portion size. The system confirms the customer’s selection and if correct, these 
-are appended to their order. The system then updates the running total of their order and 
-presents an up-to-date summary of their order. The client can either continue to place their 
-order in the system or cancel the order altogether.
+A customer accesses the system's web interface and views available pizza menus (popular 
+combinations, preconfigured options, and <i><code>"Create your Own Pizza"</code></i> menu) 
+in the <i><code>"My Shopping Cart"</code></i> tab, selects one, and proceeds to 
+the <i><code>"Configure Your Order"</code></i> tab to specify details like crust and size.  The 
+system confirms the 
+order, updates the total in the <i><code>"Shopping Cart Contents"</code></i> tab, and allows the 
+customer to 
+continue or cancel.
 </p></li> 
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: <p>
 During the customer’s shopping cart modification, if the system detects that one or more 
-ingredients are unavailable or low on stock, it will notify the customer and suggest alternative 
-ingredients to use based on the available ones in the customer’s pizza. If the client attempts 
+ingredients are unavailable or low on stock, it will alert the customer through an <b>on-screen 
+popup</b> and suggest 
+alternative ingredients to use based on the available ones in the customer’s pizza. If the client attempts 
 to make more than one pizza modification concurrently, the system will inform the customer and 
-block additional modifications until the opened modifications are done. If all subsystems that 
-interact with order details, billing, total calculations where to fail or be otherwise 
-unavailable, the system would inform the customer and offer them to store their order until the 
-systems are back online
+block additional modifications until the opened modifications are done. 
 </p></li> 
 </list>
-<img alt="UpdateShoppingCartItems.png" src="UpdateShoppingCartItems.png" thumbnail="true"/>
-</def>
 
+<img alt="UpdateShoppingCartItemsCorrected.png" src="UpdateShoppingCartItemsCorrected.png" thumbnail="true"/>
+</def>
 <def title="Place Pizza Order">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definition</format></b>: <i>ORDMA01,
 ORDMA02, ORDMA03, ORDMA04, ORDMA05, ORDMA06, ORDMA07, DELMA02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: <p>
-The customer, having modified the individual's shopping cart, is then redirected to a payment and order
-processing portal where the individual's order is available for review, modification, cancellation, or
-processing. The user can choose any of these options and stop, modify, or continue the process. The
-customer, if content with the order's details, will continue the process and proceed to check out where
-the system will require a valid delivery address that will be validated internally. After delivery
-address definition, the customer will have the option to choose a payment method for their order,
-subsequently the customer's payment information will be validated internally. Once validated, the system
-will process payment, confirm order creation to the user, and internally notify all internal
-stakeholders to being order tracked and continuously update the customer on the state of their order
-through a live map.
+After modifying their shopping cart, the customer proceeds to the <i><code>"Review Your Order"</code></i> tab to 
+review, modify, or cancel their order.  Choosing to continue, the system moves the user to a 
+<i><code>"Checkout"</code></i> tab, and the customer provides a delivery address, which is internally verified.  
+Next, they select a payment method, which is also validated internally. Upon successful payment 
+validation, the system processes the payment, sends an order confirmation notification, and 
+internally notifies stakeholders to begin order tracking.  The system then tracks the order and 
+provides live map updates to the customer.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: <p>
 During checkout, the customer's delivery address might be outside a delivery radius for the pizza
@@ -597,22 +593,54 @@ busy, at which point the system informs the user of this issue and provides a te
 map page.
 </p></li>
 </list>
+
 <img alt="PlacePizzaOrder.png" src="PlacePizzaOrder.png" thumbnail="true"/>
 </def>
+<def title="Track Active Order Status">
+<list>
+<li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA02, DELMA02-01, DELMA02-02</i></li>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+If the customer has an active order in the system, the customer can accesses their active 
+order details through the <i><code>"Track My Order"</code></i> tab in the system's web interface. 
+The system displays the status of 
+their order, displaying an internal flag to the user if the order is still in the kitchen. Once 
+the order enters the delivery phase, the system’s web interface will begin to display a live GPS 
+feed through a <b>live map</b>, showing the location of the driver, the customer and an ETA for 
+the delivery. The system automatically updates the map and displays new milestones as they are 
+reached.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+In the off chance the GPS tracking system becomes temporarily unavailable, the system will fall 
+back to a milestone status update, without the real-time location tracking ability it normally 
+displays. The system then will roll back to a simple interface, showing the ETA and current 
+milestone. Based on delivery driver route changes, the system recalculates the ETA information 
+and presents it to the user. If the system at any point loses connection from the user, it will 
+queue changes such that synchronization is never lost until the user reconnects to a suitable 
+network.
+</p></li>
+</list>
+<img alt="TrackActiveOrderStatus.png" src="TrackActiveOrderStatus.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Customer Only Use Cases">
+<p>The following are use cases defined solely for the Customer (Registered Account user).</p>
+<deflist collapsible="true" type="full">
 <def title="Reorder From History">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ORDMA01, ORDMA02, ORDMA03, ACCMA02, ACCMA06</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The customer accesses their order history through their account interface, where the system 
-displays a list of the previous orders registered to the customer’s account, showing price, 
-items, delivery location, and payment method used. From this listing, the user can select one 
-previous order, and the system will repopulate its information on the current customer’s 
-shopping cart. The customer is prompted to either accept the prefilled information or modify it. 
-The user can then modify the payment method, or order items. Once successful modification, or 
-acceptance, is detected by the system, the system will validate internally all ingredient 
-availability, while also validating payment method viability, and delivery location correctness. 
-Upon successful validation, the system proceeds with Place Pizza Order use case.
+The customer accesses their <i><code>"Order History"</code></i> record through the 
+<i><code>"My account information"</code></i> tab, 
+where the system displays a list of the previous orders registered to the customer’s account, 
+showing price,items, delivery location, and payment method used. From this listing, the user 
+can select one previous order, Selecting an order repopulates the shopping cart. The customer 
+can accept or modify the prefilled information, including payment method and order items.  
+After modification or acceptance, the system validates ingredient availability, payment method, 
+and delivery location.  If valid, the system proceeds to the Place Pizza Order use case.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -625,51 +653,20 @@ original order, the system displays the updated pricing and requires customer ac
 before proceeding with the order.
 </p></li>
 </list>
+
 <img alt="ReorderFromHistory.png" src="ReorderFromHistory.png" thumbnail="true"/>
 </def>
-<def title="Track Active Order Status">
-<list>
-<li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA02, DELMA02-01, DELMA02-02</i></li>
-<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-Provided that the customer has an active order in the system, the customer accesses their active 
-order details through the system’s web interface. The system in turn will display the status of 
-their order, displaying an internal flag to the user if the order is still in the kitchen. Once 
-the order enters the delivery phase, the system’s web interface will begin to display a live GPS 
-system’s feed in a live map, showing the location of the driver and the customer and an ETA for 
-the delivery. The user can update the screen to view the most up to date information, which the 
-system will handle automatically, displaying new milestones when they are reached.
-</p></li>
-<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
-<p>
-In the off chance the GPS tracking system becomes temporarily unavailable, the system will fall 
-back to a milestone status updates, without the real-time location tracking ability it normally 
-displays. The system then will roll back to a simple interface, showing the ETA and current 
-milestone. Based on delivery driver route changes, the system recalculates the ETA information 
-and presents it to the user. If the system at any point loses connection from the user, it will 
-queue changes such that synchronization is never lost until the user reconnects to a suitable 
-network.
-</p></li>
-</list>
-
-<img alt="TrackActiveOrderStatus.png" src="TrackActiveOrderStatus.png" thumbnail="true"/>
-</def>
-</deflist>
-</def>
-<def title="Customer Only Use Cases">
-<p>The following are use cases defined solely for the Customer (Registered Account user).</p>
-<deflist collapsible="true" type="full">
 <def title="Manage Payment Methods">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA02, ACCMA03</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The customer accesses their account settings through the system’s web interface and selects the 
-payment methods section, where upon entry the system will populate information about all payment 
-methods stored within the system (often credit and debit cards). The customer is then shown 
-options to modify, remove, update, or add different payment methods into the system. When 
-removing a payment method, the system requests confirmation from the customer before removing 
-said payment method. On any other case, the system requests the new information, internally 
+The customer can accesses their account settings in the <i><code>"My account 
+information"</code></i> tab within the 
+system’s web interface and selects the <i><code>"Stored Payment Methods"</code></i> tab, where 
+the system displays stored payment methods. The customer can modify, remove, update, or add 
+methods. When removing a payment method, the system requests confirmation from the customer 
+before removing it. On any other case, the system requests the new information, internally 
 reviews and validates the information, and asks the customer to confirm the changes. 
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
@@ -683,34 +680,33 @@ in the system at that moment. In cases where the customer attempts to add a paym
 already exists, the system prompts them to update the existing entry instead.
 </p></li>
 </list>
-<img alt="image.png" src="ManagePaymentMethods.png" thumbnail="true"/>
+
+<img alt="ManagePaymentMethods.png" src="ManagePaymentMethods.png" thumbnail="true"/>
 </def>
 <def title="Manage User Defined information">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA02, ACCMA03, ACCMA06</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The user accesses their online account setting and preferences section within the system’s web 
-interface. Once in this section, the system will populate the screen with all the information 
-associated with the account except payment methods, i.e., it will include billing information, 
-main and stored delivery addresses, past purchases, preferred name, accessibility settings, etc. 
-The customer then is shown a series of options, either add information (if any is missing), 
-modify stored information or remove information from the system’s internal storage. The customer 
-then selects an option and follows the indicated steps on the screen. Once the information is 
-modified, it is validated, in the case of delivery addresses and billing information, or stored 
-directly in the case of user personal information.
+The user accesses their online account setting through the <i><code>"My account 
+information"</code></i> tab in the system's web interfaces, then the customer access the 
+<i><code>"Manage my Preferences"</code></i> tab. the system displays account information 
+(excluding payment methods), such as billing details, delivery addresses, purchase history, and preferences. 
+. The customer can add, modify, or remove information. The customer 
+then selects an option and follows the indicated steps on the screen. Changes are validated (for 
+addresses and billing) or directly stored (for personal information).
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
 If any validation fails (invalid address, incorrect phone format, etc.), the system highlights 
 the specific fields needing correction and provides guidance on proper format. When attempting 
 to remove a primary delivery address, the system requires the customer to designate a new 
-primary address first. If the customer tries to update information that's currently being used 
-for an active order, the system warns that changes won't affect the current order.
+primary address first. If the customer tries to update information that is currently being used 
+for an active order, the system warns that changes will not affect the current order.
 </p></li>
 </list>
 
-<img alt="ManageUserDefinedDetails.png" src="ManageUserDefinedDetails.png" thumbnail="true"/>
+<img alt="ManageUserDefinedInformation.png" src="ManageUserDefinedInformation.png" thumbnail="true"/>
 </def>
 </deflist>
 </def>
@@ -723,13 +719,14 @@ actor</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA01, DELMA02, DELMA02-01, DELMA02-02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The delivery driver receives a notification through the system’s web interface about a new 
-delivery assignment that has opened up in their delivery radius. The system displays the 
-delivery details including the customer's location, complete order contents, and payment amounts 
-based on the delivery options. The driver reviews this information and accepts the assignment 
-through the system’s web interface. Upon acceptance, the system automatically updates the 
-driver's status to "On Delivery", showing this milestone to the customer on their interface too. 
-In parallel, and internally, the system will use the AI-driven delivery forecast service to 
+The delivery driver receives a notification to the <i><code>"Available Deliveries Near 
+You"</code></i> tab in the system’s web interface about a 
+new 
+delivery assignment in their delivery radius. The system displays the 
+details including the customer's location, order contents, and delivery payment amount. After 
+reviewing, the driver accepts via the system interface, changing their status to "On Delivery," 
+showing this milestone to the customer on their interface too. 
+The system will use the AI-driven delivery forecast service to 
 calculate the optimal route based on current location and destination. Finally, the system 
 notifies both the customer and delivery management about the assignment acceptance.
 </p></li>
@@ -751,18 +748,18 @@ update and continues to retry while allowing the driver to proceed with the deli
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA01, DELMA02, DELMA02-01, DELMA02-02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The driver accesses the delivery status update interface in the system’s web interface and 
-selects their current delivery. At each key milestone (picked up order, in transit, approaching 
-destination, delivered), the driver updates the delivery status. The system timestamps each 
-status change, calculates new estimated arrival times, and automatically notifies the customer 
-of the progress. The system also updates the delivery tracking live map that customers can view, 
-showing the current location and status of their delivery.
+The driver accesses the delivery status update interface, <i><code>"Manage My 
+Deliveries"</code></i> dashboard in the 
+system’s web interface and 
+selects their current delivery, the driver updates the delivery status at key milestones (picked 
+up, in transit, approaching, delivered). The system timestamps updates, recalculates ETAs, and 
+notifies the customer.  The delivery map is also updated to reflect the driver's location and 
+status.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
 If the system loses GPS connectivity, it stores status updates locally until connection is 
-restored. When the driver encounters unexpected delays, they can add notes to the status update 
-explaining the situation. If a driver forgets to update a status, the system can prompt them 
+restored. If a driver forgets to update a status, the system can prompt them 
 based on GPS location data. In cases where the wrong status is selected, the driver can correct 
 it within a limited timeframe, with the system logging both the original and corrected entries.
 </p></li>
@@ -774,12 +771,12 @@ it within a limited timeframe, with the system logging both the original and cor
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA01, DELMA02, DELMA02-01, DELMA02-02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The driver accesses their active delivery list through the system’s web interface and marks each 
-completed delivery as finished. For each delivery, they confirm successful handovers to the 
-customer. The system processes these completions, updates delivery records, adjusts the driver's 
-availability status, storing the driver and delivery metrics internally. Once all assigned 
-deliveries are complete, the driver manager is updated on the freeing of this driver, and the 
-driver’s status is changed to ‘Available’.
+The driver accesses their delivery status update interface <i><code>"manage My 
+Deliveries</code></i> through the system’s web interface and marks completed deliveries as 
+finished, confirming successful handovers. The system processes these completions, updates 
+delivery records, and adjusts driver availability, storing the driver and delivery metrics 
+internally. Once all assigned 
+deliveries are complete, the driver manager is updated on the freeing of this driver.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -791,6 +788,7 @@ deliveries when one cannot be completed. In cases where the system cannot proces
 immediately, it queues the updates and allows the driver to continue with their next task.
 </p></li>
 </list>
+
 <img alt="CompleteDeliveryRoute.png" src="CompleteDeliveryRoute.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -803,23 +801,23 @@ Specialization) actor</p>
 <list>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-A content manager accesses their content management dashboard through the system’s web interface.
-Upon entering this section, the system loads all information related to promotions, discounts, 
-prices, product listings, popular combinations, promotional campaigns, etc. The content manager 
+A content manager accesses the <i><code>"Manage 
+Restaurant Content"</code></i> dashboard through the 
+system’s web interface, which displays promotional information, pricing, product listings, and 
+campaign data. The system additionally displays an AI-driven report for orders in a given period 
+of time. The content manager 
 then accesses a section within this dashboard to manage, create, or schedule promotional 
-campaigns for specific pizza combinations. The content manager, then, selects one promotional 
-campaign or more to perform bulk, or single, modifications. The content manager then selects one 
-of these options (create, manage, schedule), and provides all relevant information. The system 
-then validates inputs, checking for conflicts with existing promotions, and verifying pricing 
-accuracy. Upon validation, the content manager confirms the campaign setup, and the system 
-updates all relevant platform sections.
+campaigns for specific pizza combinations, performing bulk or single modifications. After 
+providing necessary information, the system validates inputs for conflicts and pricing accuracy. 
+Upon validation, the content manager confirms the campaign setup. Following confirmation, the 
+system updates all relevant platform sections.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
 If the system detects any irregularities during the validation process, inconsistent pricing, 
-conflicts with other campaigns, etc., the system will alert the content manager and suggest 
-alternative dates or modifications. The system, in any event, will lead the content manager 
-through all irregular parameters and re-validate once they are re-inputted. 
+conflicts with other campaigns, etc., an alert will be shown to the content manager, and the 
+system will suggest 
+alternative dates or modifications. 
 </p></li>
 </list>
 <img alt="ManagePromotionalCampaigns.png" src="ManagePromotionalCampaigns.png" thumbnail="true"/>
@@ -829,37 +827,33 @@ through all irregular parameters and re-validate once they are re-inputted.
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ORDMA05-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The content manager accesses the menu and combination management dashboard through the system’s 
-web interface, and upon loading the dashboard the system will populate all information related 
-to pizza combinations, ingredients, and pizza menus already registered in the system. The 
-content manager is then presented with a series of options to update ingredients, including 
-descriptions, allergen warnings, and nutritional data. Once the data is registered, the content 
-manager is prompted to confirm the changes. With the changes confirmed, the system automatically 
-updates all relevant user-facing and internal-facing directives, menus, and systems to adhere to 
-the new rules.
+The content manager accesses the <i><code>"Manage Pizza Offerings"</code></i> dashboard through the 
+system’s web interface, which displays existing pizza combinations, ingredients, and menus. The 
+manager can then update ingredient descriptions, allergen warnings, and nutritional data. Once 
+the data is registered, the system asks for confirmation.  After confirmation, the system 
+automatically updates all relevant user-facing and internal systems.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
 If the data was left unchanged then the system informs the user that no changes have been made 
 and prompts for either exiting without any changes or continuing editing ingredient information. 
 If at any moment the system loses interconnection between the main servers and the content 
-manager’s dashboard, the system will backup and log all relevant information that was unsaved 
+manager’s dashboard, the system will back up and log all relevant information that was unsaved 
 for picking up later.
 </p></li>
 </list>
 
-<img alt="UpdateIngredientInformation.png" src="UpdateIngredientInformation.png" thumbnail="true"/>
+<img alt="UpdaeIngredientInformation.png" src="UpdaeIngredientInformation.png" thumbnail="true"/>
 </def>
 <def title="Manage Menu Categories">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ORDMA05, ORDMA05-03</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The content manager accesses the menu structure dashboard through the system’s web interface 
-and selects all categories that are meant for modification. The content manager creates new 
-sections, reorganizes existing items, and/or updates category descriptions. The system records 
-all changes into a changes log that is stored independently within the system for review and 
-monitoring purposes. Once all changes are registered by the system, the system makes a call to 
+The content manager accesses the <i><code>"Manage Menu Structures</code></i> dashboard through the 
+system’s web interface, the content manager selects categories for modification, creating new 
+sections, reorganizing items, and updating descriptions.  The system logs all changes for review.
+Once the system registers all changes, the system makes a call to 
 action to the content manager to confirm the changes, after which the system implements all 
 changes, while also keeping a log of the confirmation from the content manager.
 </p></li>
@@ -869,6 +863,7 @@ If the reorganization breaks existing promotional or pricing relationships, the 
 the content manager and requires resolution.
 </p></li>
 </list>
+
 <img alt="ManageMenuCategories.png" src="ManageMenuCategories.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -882,12 +877,13 @@ Specialization) actor</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>AISMA03, AISMA03-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The warehouse manager accesses the inventory management system through the system’s web 
-interface dashboards, and reviews current inventory levels across all ingredients. They analyze 
-the inventory data and create bulk purchase orders based on current stock levels and usage 
-patterns. The manager coordinates with suppliers by selecting quantities, delivery dates, and 
-special requirements. Once orders are created, the system updates inventory forecasts and 
-notifies relevant stakeholders.
+The warehouse manager accesses the <i><code>"Inventory Management"</code></i> dashboard through the 
+system’s web interface, and reviews current inventory levels across all ingredients. 
+They analyze the inventory data, and AI-driven reports provided by the 
+<b>StorageForecastService</b> subsystem creating bulk purchase orders based on current stock 
+levels and usage patterns. The manager coordinates with suppliers by selecting quantities, 
+delivery dates, and special requirements. Once orders are created, the system updates inventory 
+forecasts and notifies relevant stakeholders.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -897,6 +893,7 @@ needs, the system alerts the manager to review and modify orders. If budget cons
 ordering, the system requires additional approval levels before proceeding.
 </p></li>
 </list>
+
 <img alt="ProcessBulkOrders.png" src="ProcessBulkOrders.png" thumbnail="true"/>
 </def>
 <def title="Configure Storage Alerts">
@@ -904,11 +901,11 @@ ordering, the system requires additional approval levels before proceeding.
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>AISMA03-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The warehouse manager accesses the storage management interface through the system’s web 
-interface dashboards. Once inside, the warehouse manager defines alert thresholds for different 
+The warehouse manager accesses the <i><code>"Inventory Management</code></i> dashboard through the 
+system’s web interface. Once inside, the warehouse manager defines alert thresholds for different 
 storage conditions, configuring parameters like temperature ranges, humidity levels, and 
 expiration date notifications. The system caches this information within its internal change log 
-for warehouse managers, and asks for confirmation from the user. Once confirmed, the system 
+for warehouse managers, and asks for confirmation from the manager. Once confirmed, the system 
 applies and stores all changes in the main system storage.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
@@ -918,25 +915,23 @@ wireless or wired network damage or loss), the system will back up all informati
 stored, periodically storing data as the user registers information to keep in an internal 
 storage, there to be restated into the program once connection is back up. If the changes 
 introduced for the storage alerts are invalid, or override other configurations, the user will 
-be informed of these changes, and if forced overruled, the system will keep a log for 
-accountability.
+be informed of these changes.
 </p></li>
 </list>
+
 <img alt="ConfigureStorageAlerts.png" src="ConfigureStorageAlerts.png" thumbnail="true"/>
 </def>
 <def title="Process AI Ingredient Usage Report">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>AISMA03-02</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-The warehouse manager retrieves the AI-generated ingredient usage report from the internal 
-AI-driven ingredient use usage forecast system. With this information, the warehouse manager 
-analyzes trends in usage, purchasing, and the recommendations provided by the AI service. Based 
-on this analysis, the warehouse manager updates storage configurations, modifies order 
-quantities, and coordinates with the Content manager for promotional activities. The system, 
-after all changes have been made, will ask the warehouse manager for confirmation. Once 
-confirmed, the system will backup all information into a change log for accountability and 
-implement the changes.
+<p> The warehouse manager accesses the <i><code>"Inventory Management"</code></i> dashboard 
+through the system's web interface.
+The warehouse manager reviews the AI-generated ingredient usage report from the 
+IngredientUsageForecast service, analyzing usage trends, purchasing patterns, and AI 
+recommendations.  Based on this, they update storage configurations, modify order quantities, 
+and coordinate promotional activities with the Content manager.  After confirmation from the 
+warehouse manager, the system logs the changes and implements them.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -946,21 +941,23 @@ verification. If communication with the Content Manager is delayed, the system m
 configurations while flagging items for review.
 </p></li>
 </list>
-<img alt="ProcessAIIngredientUsageReport.png" src="ProcessAIIngredientUsageReport.png" thumbnail="true"/>
+
+<img alt="ProcessAIIngredientUsageReport.png" src="ProcessAIIngredientUsageReport.png" 
+thumbnail="true"/>
 </def>
 <def title="Process AI Inventory Forecast Report">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>AISMA03, AISMA03-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-The warehouse manager retrieves the AI-generated inventory forecast report from the internal 
-AI-driven inventory forecast service through the system's web interface dashboards. With this 
-information, the warehouse manager analyzes the information provided against real-time 
-information and historical data. Based on the analysis done, they adjust storage allocations, 
-modify order schedules, and update inventory thresholds. The system periodically stores the 
-information provided by the user. Once all changes are implemented, the warehouse manager 
-confirms the changes and requests their saving into the system’s storage. The system stores all 
-information changes in a change log and proceeds to implement all changes.
+<p>The warehouse manager accesses the <i><code>"Inventory Management"</code></i> dashboard 
+through the system's web interface. The warehouse manager retrieves the AI-generated inventory 
+forecast report from the 
+InventoryForecastService.  The warehouse manager analyzes this against real-time and historical 
+data, 
+adjusting 
+storage allocations, order schedules, and inventory thresholds.  The system periodically saves 
+this information; after the warehouse manager confirms the changes, the system logs and 
+implements them.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -970,6 +967,7 @@ interface, it will store all information supplied up to that point to load back 
 connection is reestablished.
 </p></li>
 </list>
+
 <img alt="ProcessAIInventoryForecastReport.png" src="ProcessAIInventoryForecastReport.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -983,13 +981,13 @@ Specialization) actor</p>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA01, DELMA01-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
-The delivery manager accesses the zone configuration interface and views current delivery zone 
-boundaries. They analyze coverage data and traffic patterns for each zone. Based on this 
-analysis, they adjust zone boundaries, update delivery fees, and modify service areas. The 
-system validates these changes for coverage gaps and overlaps. Upon validation, the manager 
-confirms the changes, and the system updates all zone configurations. As with any other 
-administrative action, the system keeps track of an internal change log of each change the 
-delivery manager has made, effectively storing said information for accountability purposes.
+The delivery manager accesses <i><code>"Configure Delivery Zones"</code></i> dashboard through 
+the system's web interface and views current delivery zone boundaries. They analyze coverage 
+data and traffic patterns for each zone based on an <b>AI-driven report</b> provided by the 
+DelliveryForecastService . Based on this 
+analysis, they adjust zone boundaries, update delivery fees, and modify service areas.  The 
+system validates the changes for gaps and overlaps. After manager confirmation, the system 
+updates the zone configurations and logs all changes.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
@@ -1001,14 +999,16 @@ boundaries, setting service areas and delivery fees based on distance and traffi
 ensuring optimal coverage.
 </p></li>
 </list>
+
 <img alt="ConfigureDeliveryZones.png" src="ConfigureDeliveryZones.png" thumbnail="true"/>
 </def>
 <def title="Handle Delivery Exceptions">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>DELMA02, DELMA02-01</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-The delivery manager receives alerts about delivery issues through the system. They assess the 
+<p> The delivery manager accesses the <i><code>"Delivery Incident Reports"</code></i> dashboard 
+through the system's web interface. The delivery manager receives alerts about delivery issues 
+through the system. They assess the 
 situation and access contingency planning tools. Based on the type of exception, they implement 
 appropriate responses such as reassigning drivers, modifying routes, or adjusting delivery times.
 The system updates affected orders and notifies relevant stakeholders of changes.
@@ -1021,6 +1021,7 @@ review. If communication with affected drivers is disrupted, the system suggests
 contact methods and temporary reassignments.
 </p></li>
 </list>
+
 <img alt="HandleDeliveryExceptions.png" src="HandleDeliveryExceptions.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -1033,41 +1034,36 @@ Specialization) actor</p>
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA09, ACCMA05</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-The customer manager receives security alerts from the Security Manager subsystem about 
-suspicious customer behavior. They review the detailed security report including login patterns, 
-transaction history, and flagged behaviors. Based on the severity and type of suspicious 
-activity, the customer manager either initiates contact with the customer for verification or 
-implements immediate security measures. The system logs all actions taken and updates the 
-account status accordingly.
+<p> The customer manager accesses the <i><code>"Security Reports"</code></i> dashboard through 
+the system's web interface. The dashboard shows alerts from the SecurityManagerSubsystem about 
+suspicious customer behavior. After reviewing the report (login patterns, transaction history, 
+flagged behaviors), they contact the customer for verification or implement security measures, 
+as needed. The system logs all actions and updates the account status.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
 <p>
-If throughout the analysis process the system detects that any order history review, payment 
-method modification, or order placement have been done, the system will lock down the account, 
-log out all users, and cancel all placed orders, proceeding to a refund request for any charged 
-amount. If customer contact cannot be achieved, then the system will lock down, or disable the 
+If customer contact cannot be achieved, then the system will lock down, or disable the 
 account depending on the severity of the issue. If at any moment the system loses contact with 
 the main servers for data storage and logging, the system will keep a redundant change log with 
 the most up-to-date information, even if the customer manager did not save any changes.
 </p></li>
 </list>
-<img alt="ProcessCustomerSecurityReports.png" src="ProcessCustomerSecurityReports.png" thumbnail="true"/>
+
+<img alt="processCustomerSecurityReports.png" src="processCustomerSecurityReports.png" thumbnail="true"/>
 </def>
 <def title="Process Refund Requests">
 <list>
 <li><b><format color="CornFlowerBlue">Related Requirement Definitions</format></b>: <i>ACCMA06, ORDMA06</i></li>
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
-<p>
-The customer manager accesses the refund request through the system interface. They review order 
+<p>The customer manager accesses the <i><code>"Customer Support"</code></i> dashboard through the 
+system's web interface.They review order 
 details, delivery confirmation, and customer history. The manager validates the refund claim 
 against established criteria and determines appropriate compensation. Upon approval, the system 
 processes the refund through the original payment method and updates order records. The system 
 then notifies the customer of the decision and refund status.
 </p></li>
 <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
-<p>
-If the customer manager is unable to access the refund request dashboard through the system’s 
+<p>If the customer manager is unable to access the refund request dashboard through the system’s 
 web interface, the system will inform the customer manager that there is an internal error and 
 proceed to elevate the warning of an error up to an appropriate system administrator. If the 
 customer manager is unable to view order details, delivery confirmations, or customer history, 
@@ -1078,6 +1074,7 @@ If the system is unable to communicate with the customer, either because of acco
 system errors, it will notify the customer manager for further action.
 </p></li>
 </list>
+
 <img alt="ProcessRefundRequest.png" src="ProcessRefundRequest.png" thumbnail="true"/>
 </def>
 </deflist>
@@ -1099,8 +1096,8 @@ The following defines the main flow (using the casual format) for each of these 
 <p>
 The customer (registered/unregistered) inputs all details of their preferred payment method. The 
 system takes those details and passes them through an API gateway to a validation service that 
-validates expiration date, card number, and balance if applicable (debit cards for example). If 
-validation succeeds, the user is alerted to this in the check out page, and the system logs all 
+validates expiration date, card number, and balance if applicable (debit cards, for example). If 
+validation succeeds, the user is alerted to this in the check-out page, and the system logs all 
 relevant order information along with information about the successful payment log. 
 
 </p></li>
@@ -1125,10 +1122,10 @@ to check out and request a GPS tracking lock.
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
 The customer (registered/unregistered), throughout the modification of their pizza selections, 
-or reordering from their history, have the ability to modify their pizza’s ingredients. The 
+or reordering from their history, can modify their pizza’s ingredients. The 
 customer modifies the ingredients in their pizza, and the system follows these modifications 
 with reviews on the availability of these ingredients. If no availability issues arise, the 
-system informs the user of this and proceeds with order creation or check out. 
+system informs the user of this and proceeds with order creation or checkout. 
 
 </p></li>
 </list>
@@ -1189,9 +1186,9 @@ to the method that called it such that it is updated in the payment information 
 <li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
 <p>
 The customer places an order and pays for it, the system raises an alert to nearby drivers about 
-the undelivered order for any and all driver to accept. A driver accepts the order and proceeds 
+the undelivered order for any driver to accept. A driver accepts the order and proceeds 
 to pick up and begin delivery, the system internally communicates to the user that a delivery 
-driver is enroute to pick up their order. The system then initializes a GPS Tracking connection 
+driver is en route to pick up their order. The system then initializes a GPS Tracking connection 
 between the main system and the onboard equipment in the driver’s vehicle (or phone), through 
 which it begins capturing both GPS information and delivery metrics.
 </p></li>
@@ -1203,7 +1200,7 @@ which it begins capturing both GPS information and delivery metrics.
 <p>
 The driver proceeds to deliver the order to the customer. As the driver proceeds with the 
 delivery, the driver is prompted with various milestones that can be used to update the customer 
-quickly without having to use the phone while enroute. The system handles the communication of 
+quickly without having to use the phone while en route. The system handles the communication of 
 milestones to the customer and internally stores them as a progress record.
 
 </p></li>
@@ -1241,7 +1238,9 @@ the manager that performed the changes.
 The administrator specialization attempts to log in to the system with their credentials through 
 a specialized log-in form in the system’s web interface. The system proceeds to validate these 
 credentials based on the information provided and the security rules of the internal Security 
-Manager. Once validation is completed and successful, the system will alert the administrator’s specialization that their session will begin to be monitored for security purposes. Finally, the system allows the administrator in, to the respective dashboard of their division.
+Manager. Once validation is completed and successful, the system will alert the administrator’s 
+specialization that their session will begin to be monitored for security purposes. Finally, the 
+system allows the administrator in, to the respective dashboard of their division.
 </p></li>
 </list>
 </def>
@@ -1270,6 +1269,17 @@ system’s storage, once validated the user is alerted of this and allowed into 
 </p></li>
 </list>
 </def>
+
+<def title="Log Administrative Content Change">
+<p>
+The administrator specialization accesses their respective portals. Once logged in, they attempt 
+to perform changes on the internal system represented through their portals. The system logs all 
+administrative content changes regardless of their access level in a separate internal storage. 
+Once all changes have been performed by an administrator specialization, the system stops 
+recording the log until further action is taken. 
+</p>
+</def>
+
 </deflist>
 </procedure>
 
@@ -1576,7 +1586,8 @@ and responses</li>
 <def title="DeliveryZoneRecord">
 <p>A class that maintains statistical data and metrics for specific delivery zones to optimize delivery operations. 
 This class is different from DeliveryMetricRecord as it handles the zone in its entirety, that is, this class 
-provides information for a delivery zone in a given day, for example, as opssoed to DeliveryMetricRecord providing 
+provides information for a delivery zone in a given day, for example, as opposed to 
+DeliveryMetricRecord providing 
 information about a single delivery from a single driver</p>
 <list type="bullet">
 <li><b><format color="CornFlowerBlue">zoneCompletedDeliveries</format></b>: Counter tracking the total number of completed deliveries in this zone</li>
@@ -1743,7 +1754,7 @@ usage, pizza purchasing patterns, etc., all in an effort to increase productivit
 <p>Term used to describe the aggregate supplier of possible AI-based services to this system. It will be the basis of many optimization services within our application</p>
 </def>
 <def title="Ingredient">
-<p>An item that is used during the making of a pizza as a topping placed on top of a piece of dough. This is the main definition used through this program</p>
+<p>An item that is used during the making of a pizza as a topping placed on the pizza's top. This is the main definition used through this program</p>
 </def>
 <def title="Pizza">
 <p>The fundamental building block of Orders, Shopping Carts and Customer Preferences. Pizzas are defined as collections of one or more ingredients (also known as Pizza Items) over a singular piece of flat dough.</p>
