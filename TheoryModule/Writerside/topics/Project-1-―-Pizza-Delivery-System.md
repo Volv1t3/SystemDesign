@@ -1293,9 +1293,287 @@ is allowed in to Customer-only menus.
 </li> 
 </list>
 </def>
-
 </deflist>
 </procedure>
+
+### Use Cases ― Second Leg
+<p>This last part of the project focused entirely on the second set of actors that had some interaction with out 
+application. Given that our application was architected its entirety in terms of services and expandable 
+microservice patterns, an almost natural set of actors that came about was the set of ServiceProviders, from these 
+we had payment service providers, security providers, and most importantly, the set of AI providers that opened the 
+door for business analytics software implemented through AI.</p>
+<p>For this reason, this second leg of the project took a careful look at each of these actors to devise, with the 
+same level of detail and coherence, a set of use cases that represented their interactions with out system.</p>
+
+<procedure title="Use Case Listing ― Servie Actors">
+<deflist type="full" collapsible="true">
+<def title="GPS System Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Tracking Delivery Driver Location">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The system periodically requests GPS location data from the delivery driver's device. The GPS collects the latitude 
+and longitude data and transmits it to the main server. The system then updates the live tracking map for customers 
+and administrators. Additionally, the estimated time of arrival (ETA) is recalculated and displayed to the user.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the GPS signal is lost, the system uses the last known location and provides hit-based updates until real-time 
+tracking resumes. If the driver's device is not connected to the network, the system attempts to obtain location 
+data less frequently and notifies the driver.
+</p></li>
+</list>
+
+<img alt="TrackingDeliveryDriverLocation.png" src="TrackingDeliveryDriverLocation.png" thumbnail="true"/>
+</def>
+<def title="Optimizing Delivery Route">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The system collects current GPS location data from all drivers. The data is then sent to DeliveryTracking and 
+traffic conditions and estimated delivery times are analyzed. Finally, the optimized route is sent to the delivery 
+driver's interface.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If external traffic data is not available, the system uses historical data to provide an estimated optimal route. If 
+the driver deviates from the suggested route, the system recalculates and offers a new optimized route.
+</p></li>
+</list>
+
+<img alt="OptimizingDeliveryROute.png" src="OptimizingDeliveryRoute.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Security Manager Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="User Login Attempt Tracking">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user enters his or her credentials on the login page. The Security Manager logs the login attempt. If the attempt 
+is successful, access is granted. However, if multiple failed attempts occur, the system temporarily locks the 
+account and notifies the user.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If an account is locked due to repeated failed attempts, the user must follow a password recovery process. If the 
+login attempt comes from an unusual location or device, the system requests additional authentication.
+</p></li>
+</list>
+
+<img alt="UserLoginAttemptTracking.png" src="UserLoginAttemptTracking.png" thumbnail="true"/>
+</def>
+
+<def title="Session Management">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user logs into the system, which generates and securely stores a session token. During subsequent requests, the 
+system verifies the token's validity. If the session expires, the user is logged out and must authenticate again.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If a user logs in from a second device, the system checks the policies in place (either single session or multiple 
+sessions) and acts accordingly. Additionally, if a session remains inactive for a predefined period, the system 
+automatically logs the user out.
+</p></li>
+</list>
+
+<img alt="SessionManagement.png" src="SessionManagement.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Payment Processing Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Process Customer Payment">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The customer selects a payment method at checkout. The system then securely transmits the payment details to the 
+Payment Processing System. The Payment Processing System validates the data and authorizes the transaction. Once 
+successfully authorized, the order is confirmed and a receipt is generated for the customer.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the payment fails, the system notifies the user and requests an alternative payment method. In case of suspected 
+fraud, the system declines the transaction and notifies the Security Manager.
+</p></li>
+</list>
+
+<img alt="ProcessCustomerPayment.png" src="ProcessCustomerPayment.png" thumbnail="true"/>
+</def>
+
+<def title="Refund Processing">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The user requests a refund through customer service. The system then verifies the order details and eligibility for 
+the refund. If everything is valid, the request is sent to the Payment Processing System for execution and the user 
+is notified of the refund status.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the refund request is denied, the system provides a detailed reason. If the payment method used does not allow 
+refunds, the system offers store credit or another form of compensation.
+</p></li>
+</list>
+
+<img alt="RefundProcessing.png" src="RefundProcessing.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Authenticator Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Validate User Credentials">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user enters his or her username and password. The system securely transmits these credentials to the 
+Authentication Service. The Authentication Service validates the credentials and returns an authentication token. If 
+authentication is successful, the system grants the user access.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If authentication fails, the system prompts the credentials to be re-entered or a password recovery process to be 
+initiated. If multi-factor authentication (MFA) is enabled, the system requests additional verification.
+</p></li>
+</list>
+
+<img alt="ValidateUserCredentials.png" src="ValidateUserCredentials.png" thumbnail="true"/>
+</def>
+<def title="Manage Token Expiry and Renewal">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user remains active in the system. Before the token expires, the system requests a renewal from the Authentication 
+Service, which verifies the user's activity and grants a new session token.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If token renewal fails, the user is logged out and must authenticate again. If suspicious activity is detected, the 
+system invalidates all active tokens and forces re-authentication.
+</p></li>
+</list>
+
+<img alt="ManageTokeExpiryAndRenewal.png" src="ManageTokeExpiryAndRenewal.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Ingredient Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Statistics and Predictions">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The System may be triggered manually by the or in intervals specified by content manager. Once active, OrderAnalyzer,
+composed inside IngredientUsageForecastService will recompile information about the orders made by the system since 
+the last update. IngredientUsageForecastService then will convert the data into an understandable API call for the 
+Ingredient Usage Forecast AI and Send it. The Ingredient Usage Forecast will process the information and produce 
+statistics about the customer order trends. These will be further processed by the system using the "Process AI 
+Forecast Report" use case and then presented to the ContentManager.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+API Call Failure/ Incomplete or Corrupt Data: If the API call to the Ingredient Usage Forecast AI fails, the system 
+will retry the process for a predefined number of times. If all retries fail, the system will notify the 
+ContentManager of the issue and provide the last successfully processed forecast as a fallback.
+</p></li>
+</list>
+
+<img alt="RequestStatisticsAndPredictions.png" src="RequestStatisticsAndPredictions.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Storage Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Storage Quantity Replenishment Estimation">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The use case is triggered once the stock reaches a predefined level or is manually triggered by a WarehouseManager. 
+The system gathers order consumption data using the OrderAnalyzer, which is part of the InventoryForecastService. 
+The StorageForecastService formats the gathered data into an AI-compatible request and sends it to the Storage 
+Forecast AI via the AI API. The Storage Forecast AI processes the request and predicts future stock levels based on 
+consumption patterns, seasonal demand, and supplier lead times. The system receives the forecasted stock levels and 
+presents the formatted results to the WarehouseManager and other relevant administrative roles for decision-making 
+regarding restocking or adjustments.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+API Call Failure / Timeout: If the request to the AI service times out or returns an error, the system will retry 
+the request a predefined number of times. If all retry attempts fail, the system will notify the WarehouseManager 
+for further investigation.
+</p></li>
+</list>
+
+<img alt="RequestStorageQuantityRepelishmentEstimation.png" src="RequestStorageQuantityRepelishmentEstimation.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Delivery Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Route Optimization">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+When an order is ready to be delivered, this use case is followed. The system recompiles and sends the information of the DeliveryZoneRecord and DeliveryMetricRecord of the drivers in range using the DeliveryAnalyzer composed into the DeliveryForecastService class. The DeliveryForecastService then proceeds to pass the information to the Delivery Forecast service using the AI API. The service then analyzes the information in search of an optimization route. The system will wait up to 1 minute for a response. When the expected information reaches, the system will process this information, converting it into a processable RouteOptimizationRecord for the administrative accounts.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+In case the wait interval times out, or the system receives an unexpected error signal, the DeliveryAnalyzer will inform about the occurrence through the RouteOptimizationRecord and provide as the optimized route a standard route defined by the gps location of the order. The system then will resend a request to the service provider. In case communications fails a second consecutive time, a warning will be issued to a DeliveryManager for further investigation.
+</p></li>
+</list>
+
+<img alt="RequestRouteOptimization.png" src="RequestRouteOptimization.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Cellular Network Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Communicate Optimized Route">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+When a route optimization record reaches the DeliveryManager and the competent DeliveryDriver account gets updated, the DeliveryDriver will be responsible of informing the driver actor of the newly updated route. For this they will send a notification request to the cellular network, specifying the new route and intended account recipient. The cellular network will pass this information to the driver for them to open and update the considerations.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+Failed communication, no confirmation of receipt or fallen network: The DeliveryManager will attempt to resend the 
+request after a predefined timeout. If repeated attempts fail, the system will log the failure and escalate it to 
+the security Manager. Meanwhile, the driver can manually retrieve the updated route by accessing their 
+DeliveryDriver account directly through internet.
+</p></li>
+</list>
+</def>
+
+<def title="Update Delivery Status">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The driver actor will send updates to the Cellular network as its situation changes. The possible updates include 
+Milestone updates, location updates and Account updates. The cellular network will receive the intended adjustments 
+and will pass the information to the system. The information then will be adapted to be system understandable using 
+the Record delivery Milestone use case and finally the DeliveryManager will be informed about the changes to update 
+DeliveryDriver.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+Failed communication, no confirmation of receipt or fallen network: The DeliveryManager will attempt to resend the 
+request after a predefined timeout. If repeated attempts fail, the system will log the failure and escalate it to 
+the security Manager. The driver will be informed about the situation through a sms and asked to update the delivery 
+status directly to the manager through his cell phone.
+</p></li>
+</list>
+</def>
+</deflist>
+
+<img alt="DeliveryOptimizationUseCase.png" src="DeliveryOptimizationUseCase.png" thumbnail="true"/>
+</def>
+</deflist>
+</procedure>
+
 
 ## Annexes
 
