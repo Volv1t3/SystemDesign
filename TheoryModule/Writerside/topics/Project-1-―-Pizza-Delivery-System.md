@@ -1582,7 +1582,19 @@ status directly to the manager through his cell phone.
 </def>
 </deflist>
 </procedure>
-
+<p>With the information that was presented above concluded, this is all the information that we 
+have compiled in both weeks for this project. The analysis done within has been thorough and has 
+come about not only from the domain analysis done to the specification, but also to the 
+information we have compiled over the years of having contact with applications of the sort. 
+With these ideas, and our fresh perspectives, we were capable of taking a look at the problem, 
+and offer solutions and innovation to the pizzeria's delivery system, moving it form a simple 
+order, pay, and go system, to a fully fledged AI-integrated and customer oriented application.
+</p>
+<p>All in all, the process of developing use cases, and the domain model to some extent, could 
+see more work and expansion done to it in the future. Nevertheless, the information 
+compiled in this document encompasses all areas of the requirements for this project, as well as 
+the information required by any stakeholders interested in reviewing the project's progress.
+</p>
 
 ## Annexes
 
