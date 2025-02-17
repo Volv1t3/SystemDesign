@@ -10,4 +10,9 @@
         <description>Created after removal of "Overview" from Design Patterns | Documentation</description>
         <accepts>Overview.html</accepts>
     </rule>
+    <rule id="73f41838">
+        <description>Created after removal of "Class #6 ― Monday 17th Feb 2025" from Design Patterns | Documentation
+        </description>
+        <accepts>Class-6-―-Monday-17th-Feb-2025.html</accepts>
+    </rule>
 </rules>

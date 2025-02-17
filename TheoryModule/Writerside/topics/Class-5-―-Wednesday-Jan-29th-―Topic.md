@@ -1,7 +1,7 @@
-# Class #5 ― Monday 3rd, Wednesday 5th, Monday 10th Feb 2025  
+# Class #5 ― Robustness and Activity Diagrams  
 
 > The following will contain information about <b>a practical application of domain modeling, domain models, and use 
-> case analysis to create an architectural view of a to-be-implemented application. </b> The content will be broken 
+> case analysis to create an architectural view of a to-be-implemented application.</b> The content will be broken 
 > down into sections, taking great care to make it concise and robust, while maintaining flexibility and implementation 
 > agnosticism. This document will contain some of the overview of my design process, and while we are at it, I will 
 > use Eclipse's capella or Change Vision Astah to manage these projects.
@@ -22,7 +22,7 @@ etc. Since Astah or Capella do not have GitHub integration, etc.</p>
 not be continuing this class record.
 </note>
 
-## Wednesday 5h Class ― Robustness Diagrams
+## Wednesday 5h Class & Monday 17th ― Robustness Diagrams
 <p>Robustness diagrams are one of the diagram models from UML that we are going to review in 
 our upcoming classes.</p>
 
@@ -77,7 +77,7 @@ pros, cons, and characteristics for this type of UML diagram.
 </procedure>
 
 #### Robustness Diagrams ― Diagram Elements
-<p>Despite the class presentation showing only three parts, in theory (basedc on the agile 
+<p>Despite the class presentation showing only three parts, in theory (based on the agile 
 modeling webpage on the same topic), we have more than three, we have <b>four elements to a 
 robustness diagram</b>. These will be discussed in the following procedure block</p>
 <procedure title="Elements of a Robustness Diagram" type="choices">
@@ -88,7 +88,7 @@ robustness diagram</b>. These will be discussed in the following procedure block
 action, and those external entities that initiated the use case</code></i></p>
 </def>
 <def title="Boundary Elements [Object]"><p>Defined as a software element, such as a 
-screen, a report, HTML pages, or a system interfcae that actors interact with. On the 
+screen, a report, HTML pages, or a system interface that actors interact with. On the 
 other hand they can be defined as nouns (or objects)</p></def>
 <def title="Control Elements [Controller]"><p>These can be defined as actions, as verbs, 
 as they serve as <b><code>glue between boundary elements and entity elements, 
@@ -192,9 +192,365 @@ connected to some extent within them.</p>
 </tabs>
 </procedure>
 
+### Robustness Diagrams ― Designing Our First Diagrams
+<p>To design a Robustness diagram, there is a whole process that should be followed, and there is a whole set of 
+considerations (guidelines) that we must follow to ensure that we do robustness analysis correctly.</p>
+<p>In the broadest sense of the word, robustness analysis is alla bout designing these graphs and using them to 
+improve our domain model, use cases, altogether, and in the end produce a middle ground step between the what domain 
+model, and the how design analysis.
+</p>
+<img alt="TheHowMiddleGround.png" src="TheHowMiddleGround.png" thumbnail="true"/>
+<p>In the following sections, we will use the base concepts reviewed in previous sections to improve our 
+understanding of <i><b><code>Robustness Analysis, and Robustness Diagram Design</code></b></i></p>
+
+#### Robustness Diagrams ― Robustness Analysis
+<p>Before we delve into the ten considerations (or guidelines) for designing good robust 
+diagrams and applying those in the context of our design modeling. We need to take a step back 
+and discuss the topic at hand, Robustness Analysis, since these ten guidelines are meant to 
+facilitate this process</p>
+<note><p><i>Robustness Analysis <b><code>is a technique that bridges the gap between analysis and design 
+in software development by validating and refining use cases through visual modeling</code></b>. It employs 
+specialized diagrams that use three main types of objects—boundary objects (interfaces), 
+control objects (processing), and entity objects (data)—,to <i><code>represent system interactions and 
+behaviors</code></i>. The analysis <i><b><code>helps 
+identify missing requirements, clarify system responsibilities, 
+and expose potential design flaws early in the development process</code></b></i> by forcing developers to 
+think through how use cases will be implemented. Robustness Analysis serves as an intermediate 
+step between use cases and sequence diagrams, providing a way to verify that use cases are 
+complete and technically possible before moving into detailed design. This technique, originally 
+developed as part of the ICONIX process, helps teams create more robust and maintainable 
+software systems by ensuring that the design supports all required capabilities.</i></p></note>
+
+<p>From this little sidenote we can then extrapolate two things, one the <b>ICONIX process</b> 
+which would be a great home study session, as well as the use of robustness analysis. We can 
+think of this type of analysis as a means to and end through which we validate the use cases 
+we've written, a means to and en through which we further ground our design into more feasible, 
+implementable, and overall correct use cases and requirements.</p>
+<p>For this reason, this crucial design step is taken after the use case modeling phase has 
+passed (since we are in an iterative environment, this never really stops, but we 
+cannot just go back to this all the time). The idea then is to bridge this gap that might exist 
+between the design analysis phase (i.e, when we take care of designing conceptual classes and 
+defining further interactions), to this diagramming, and more abstract, wishful, to some extent, 
+phase of OOAD.
+</p>
+<p>Having analyzed its implications, it becomes important to write about the pros, cons and key 
+points about Robustness Analysis, such that our information is complete at least for this 
+section.</p>
+<procedure title="Robustness Analysis in Software Development ― Key Notes, Pros, and Cons" collapsible="true">
+<tabs>
+<tab title="Robustness Analysis | Key Points">
+<list>
+<li><b><format color="CornFlowerBlue">Definition and Purpose</format></b>: A bridging technique between analysis and design phases that validates and refines use cases through visual modeling</li>
+<li><b><format color="CornFlowerBlue">Core Components</format></b>: Three main object types:
+- Boundary objects (interfaces)
+- Control objects (processing)
+- Entity objects (data)</li>
+<li><b><format color="CornFlowerBlue">Design Role</format></b>: Acts as an intermediate step between use cases and sequence diagrams</li>
+<li><b><format color="CornFlowerBlue">Analysis Level</format></b>: Focuses on validating use case completeness and technical feasibility</li>
+<li><b><format color="CornFlowerBlue">Origin</format></b>: Developed as part of the ICONIX process for software development</li>
+</list>
+</tab>
+
+<tab title="Robustness Analysis | Pros">
+<list>
+<li><b><format color="CornFlowerBlue">Requirements Validation</format></b>: Helps identify missing requirements early in the development process</li>
+<li><b><format color="CornFlowerBlue">Design Verification</format></b>: Ensures use cases are technically feasible before detailed design</li>
+<li><b><format color="CornFlowerBlue">System Clarity</format></b>: Clarifies system responsibilities and interactions</li>
+<li><b><format color="CornFlowerBlue">Early Problem Detection</format></b>: Exposes potential design flaws at an early stage</li>
+<li><b><format color="CornFlowerBlue">Implementation Guidance</format></b>: Forces developers to think through practical implementation details</li>
+</list>
+</tab>
+
+<tab title="Robustness Analysis | Cons">
+<list>
+<li><b><format color="CornFlowerBlue">Additional Step</format></b>: Introduces an extra phase between analysis and design</li>
+<li><b><format color="CornFlowerBlue">Learning Requirements</format></b>: Teams need to understand specialized diagram notation and concepts</li>
+<li><b><format color="CornFlowerBlue">Process Integration</format></b>: Must be effectively incorporated into existing development workflows</li>
+<li><b><format color="CornFlowerBlue">Time Investment</format></b>: Requires dedicated effort for visual modeling and analysis</li>
+<li><b><format color="CornFlowerBlue">Methodology Specific</format></b>: Originally tied to ICONIX process, may need adaptation for other methodologies</li>
+</list>
+</tab>
+</tabs>
+</procedure>
+<p>Having defined these considerations, it is time for us to take a look at the ten key 
+guidelines about Robustness Analysis</p>
+
+##### Robustness Analysis ― Ten Guidelines
+<p>These ten guidelines are ten principles that can be applied when designing, iterating, and 
+even implementing a robustness diagram or analysis. The ideas that they present involve 
+all aspects of the analysis process, from use case analysis, robustness diagram preparation and 
+design, as well as the iterative process that holds the two together and takes our conceptual 
+understanding of our system further</p>
+<procedure>
+<deflist type="full" collapsible="true">
+<def title="1. Paste the Use Case Text Directly onto your Robustness Diagram.">
+<p>Since we are painting a picture of the use case, <b><code>line by line and action 
+by action</code></b>, it is generally advisable to keep the whole text of the use case nearby. 
+Some prefer to keep it on another window, others to include it within the diagram as a comment. 
+Whichever the selected option, this straightforward rule follows <i><b><code>you'll work through 
+the use case a sentence at a time as you draw diagram [effectively] making them two 
+different views of the same thing. Therefore you should be able to walk through the 
+text, and trace it on the diagram</code></b></i>
+</p>
+<p>An example of this would be. </p>
+
+<img alt="Ex1.png" src="IncludingUseCaseText.png" thumbnail="true"/>
+</def>
+<def title="2. Take Your Entity Classes From the Domain model and Add Any That Are Missing.">
+<p>In general, it is a good practice to <b><code>base your entity objects from your 
+domain model, i.e., they should come from it</code></b>. However, it is not uncommon for a 
+domain model to be lacking in some areas and excel in others, meaning that you 
+<b><code> might have to add some classes onto it later on</code></b>. If at any point in your 
+robustness analysis does a single class come about, and it is not in your domain model, add it!</p>
+<note>As a little sidenote, a robustness diagrams, typically represents GUI elements as 
+boundary objects, software functions using controllers, and domain objects using entities.</note>
+</def>
+<def title="3. Expect to Rewrite Your Use Case While Drawing the Robustness Diagram.">
+<p>Just like with any other project, essay, or even our own domain model analysis, rewriting is 
+key and being open to doing so is a must in this world. More often than not, first drafts show 
+<b><code>vague, ambiguous text; incomplete or incorrect information</code></b>. As such, it is 
+not uncommon to find cases where we will have to rewrite, shorten or lengthen our use case 
+definitions by having to iterate over it line by line, this because it  
+<b><code>brings errors to the surface.</code></b></p>
+</def>
+<def title="4. Make a Boundary Object For Each Screen">
+<p>This is one rule that we must never forget, <b><code>all user facing boundary 
+objects should have a name, an unambiguous one at that</code></b>. Moreover, we should always 
+include these boundary objects as they help us structure the flow of information that goes into 
+the diagram.</p>
+</def>
+<def title="5. Remember that Controllers Are Typically Logical Software Functions.">
+<p>This one might be harder to wrap our heads around, given that we have been talking mostly 
+about non-software related topics just yet. We often think about robustness diagrams as only 
+showing actions and hiding away from software constructs, but this is actually the opposite.</p>
+<note>Always consider that not all controllers become controller classes in the end, some of 
+then represent logical software functions that will become communication paths (methods for 
+example). Only in the case where a series of controllers are clustering do we talk about 
+<b><code>manager classes*</code></b></note>
+</def>
+<def title="6. Dont Worry About the Direction of the Arrows on a Robustness Diagram.">
+<p>This is another one of those rules that Daniel told us during class. While sometimes they can 
+help make a diagram less ambiguous, they are not required. <b><code>Given that these 
+diagrams are meant to disambiguate our use case text, and help us discover missing 
+domain model objects</code>, any line’s direction might not be required, or useful 
+<code>however, if we are trying to show data flow or control flow, they might!</code></b></p>
+</def>
+<def title="7. Show invoked Use Cases In Your Robustness Diagram.">
+<p>As the title of this rule states, if we were to find ourselves within a use case that holds 
+within it multiple invocations, or that to some extent requires us to call other use cases to 
+perform its main business logic. Then we have to include them. The way to do so is through the 
+keyword <b><code>invokes</code>, placed right above or in the middle of the communication 
+line</b> from an <b><code>object to the use case</code></b></p>
+<p>An example of this would be.</p>
+
+<img alt="InvokinguseCases.png" src="InvokingUseCases.png" thumbnail="true"/>
+</def>
+<def title="8. The Robustness Diagram Represents a Preliminary Conceptual Design of a Use Case.">
+<p>One key benefit of preparing robustness diagrams before trying to build code is that, as 
+these are conceptual design artifacts for our system, we can <b><code>validate 
+behavior without doing the real design, before of it even!</code></b></p>
+<note><p>While this process might appear to be complicated at first, given that it is a 
+different process altogether from a development perspective, working with it allows for 
+detachment of our thinking from the idea->code->debug->refactor cycle, and focus on what we are 
+doing and 
+the abstract how, not the language-dependent how.
+</p></note>
+</def>
+<def title="9. Objects on your Robustness Diagram will 'Morph' into the Detailed Design.">
+<p>In our implementation, we generally separate <i><code>nouns to be entity and 
+boundary objects, and verbs to be controllers</code></i>. While this might give way to the idea 
+that every little diagram entity done has to become a class later on, the truth is that only 
+boundary and entity objects will become an object.</p>
+<note><b><code>More often than not, 
+controllers will end up as messages or methods in boundary or entity classes, while 
+the latter will become classes or active entities in our system</code></b></note>
+</def>
+<def title="10. Remember that a Robustness Diagram is an 'Object Picture' of a Use Case">
+<p>This guideline goes back to our main ideas, since we are doing this process of robustness 
+analysis in order to improve our use case definitions and ground them in relation to the domain 
+model that’s been defined for the system, it is important that we think of these diagrams as 
+pictures of how the use case is supposed to play out in steps.
+</p>
+<p>Always remember that <b><code>a robustness diagrams ties use cases to objects and 
+the application's GUI. For this reason, it must not show just the basic course, but 
+all the alternative courses as well</code></b></p>
+
+<img alt="image.png" src="AllPathsDiagram.png" thumbnail="true"/>
+</def>
+</deflist>
+</procedure>
+<note><p>As a reminder, entity objects (nouns) are capable of talking to 
+<b><code>controllers only</code></b>. On the other hand, <b>controller entities</b>, can 
+only communicate with <b><code>other controllers or entities</code></b>. Lastly, 
+<b>boundary objects</b> can only talk to <b><code>controller objects</code></b></p>
+<img alt="image.png" src="AllValidrelationships.png" thumbnail="true"/>
+
+> As a sidenote to the sidenote, the previously shown tool is called EA, which is an enterprise 
+> tool developed, actively used, and updated, by Sparx Systems.
+</note>
+<p>With this information, let’s first take a look at a simple diagram example, and attempt to 
+identify the issues that are held within it</p>
+
+#### Robustness Diagrams ― Analysis Example
+
+<procedure title="Side-by-side comparison for a set of diagrams from the Internet Book Store example" type="choices" collapsible="true">
+<code>Before Refinements</code>
+<list columns="1" type="none">
+<li>
+<deflist type="full" collapsible="true">
+<def title="Diagram">
+<img alt="clipboard-image-1739827257.png" src="JSPFirstAttemptDiagram.png" thumbnail="true"/>
+</def>
+</deflist>
+</li>
+<li>
+<deflist collapsible="true">
+<def title="Analysis">
+<p>The previous diagram shows a first attempt at formulating a robustness diagram for the basic 
+course of the <b><code>Show Book Details use case</code></b>, while it in theory captures the 
+sequential logic of the use case, and traversing this diagram with ease is possible as we follow 
+the use case definition, there are various points of contention where we can improve our 
+analysis and in general our diagram definition. </p>
+<p>For starters, one of the main complications is the lack of arros (<i>yes in this case it 
+is an issue)</i>, in most cases a simple diagram is traversible without knowing the direction of 
+the arrows, but in this case, without knowing the use case definition it is hard to figure out 
+if flow goes to the home page and to the View Book Details in parallel, or sequentially, or if 
+one depends on the other. The idea of a robustness diagram is to add more depth, but keep the 
+interaction readable, to a use case.
+</p>
+<p>Moreover, some components mix names that can be though of as actions, nouns, and a mixture 
+of both. For example, the <b>View Book Details</b> boundary object can be simplified to <b>Book 
+Details</b>, to isolate the fact that it handles an entity object, and it is meant to handle its 
+details. Lastly, there are issues on the naming conventions of other boundary objects. 
+<b><code>Never add technology-dependent naming into a robustness diagram</code></b>, their use 
+is not to indicate what technology will be used, rather their use is to show the flow of 
+actions within a use case.
+</p>
+</def>
+</deflist>
+</li>
+</list>
+<code>After Refinements</code>
+<list type="none">
+<li>
+<deflist collapsible="true" type="full"> 
+<def title="Diagram">
+<img alt="clipboard-image-1739827815.png" src="ImprovedRobustDiagram.png" thumbnail="true"/>
+</def>
+</deflist>
+</li>
+<li>
+<deflist type="full" collapsible="true">
+<def title="Analysis">
+<p>As can be noted in the robustness diagram, many of the issues highlighted before have been 
+fixed, and the use case definition has been improved with more information and concept 
+separation. For starters, even if there are no line directions in the diagram, the way it is 
+structured now provides for an easy way to distinguish steps in the use case. First the user 
+interacts with the home page, where the system calls internal controller actions to retrieve 
+information (possibly from a database, and in the form of Book Lists and Catalogs), and proceeds to 
+display them. <i>This on its own</i> already organizes the use case much better, showing  
+that first loading happens, and then the user can click on any book and be taken to the Books 
+Details page, where the system populates the information of another query only about the 
+selected book.
+</p>
+<p>Moreover. the technical jargon has been removed and allows for a clearer diagram to be 
+presented where the path of information now clearly follows the use case, and showcases the 
+process to great detail.</p>
+
+</def>
+</deflist>    
+</li>
+</list>
+</procedure>
+<p>Within the book, there is a singular example that showcases the process in its entirety. 
+While the goal of this section is not to copy the example completely, we will take from it, both 
+images and information to create our own narrative here.
+</p>
+
+#### Robustness Diagrams ― Design Process
+<p>One of the first things to do when starting a new robustness diagram is to first pull up the 
+use case definition text, and as we defined earlier, bring it over as a comment or on a 
+second monitor close to you so you can iterate over it line by line.</p>
+<p>From here our goal is to, aside from <b>not panicking</b>, to handle the first line of our 
+use case. In practice this first line should <i><code>include the actor (primary, 
+secondary or supporting), that is involved with the use case</code></i>, with this primary 
+component identified, we should move to put it on the screen directly.</p>
+<note>In some cases, our use case definitions might go as deep as to specify what UI 
+component is used for which action and at which moment in the interaction. While this 
+can be useful to contextualize the app, <b><code>it is generally not 
+recommended to add UI components individually into a robustness diagram</code></b>, rather they 
+should be wrapped within screens, pages, or any other UI-holding component.
+</note>
+<p>Now, as the use case continues, we might find mentions to UI elements, or actions done to 
+them (consider a button and a mention to "being pressed"). In these cases, it is better to 
+define those actions in terms of <b><code>comments above communication lines</code></b></p>
+<procedure>
+<img alt="clipboard-image-1739828715.png" src="DiagramUpToThisPoint.png" thumbnail="true"/>
+</procedure>
+<p>From the communication image clearly there is still a series of ambiguous 
+statements, and communication lines. For example, while the use case refers to the write review 
+button being pressed, <i>we do not know from where</i>, is the state of where the user pressed 
+the button important to us?</p>
+<p>Moreover, there is ambiguity in the definition for both click and enter, and enter review and 
+click send, which one is supposed to come first, which one calls to what part of the system. All 
+of these inconsistencies are present in our <b>use case definition too</b>, since we based the 
+diagram from it, we can start to see the fallacies in our model. All in all, while the main 
+ideas of the use case are present in the diagram, they need further clarification before we can 
+say that this diagram is completed.
+</p>
+<p>Based on the domain model for this example, we can notice that for the customer to even press 
+the review button, they must be located within a book page (!). This then means that the action 
+of pressing the button is not registered directly by the Write Review Page, but by the 
+<b>Book Details Page</b>, where the options for such a task would be present. In addition, we 
+can see that the enter review and click send action can only be carried out within the <i>Write 
+Review Page</i>, separating both concerns from each other in terms of the GUI.
+</p>
+<p>Furthermore, looking at the controllers that extend from the singular boundary object of our 
+model, clearly these can be expanded and refined further, as the moderation aspect of 
+the use case is clearer and well-defined in the text. The moderation activity in the end of the 
+use case diagram can too be included, but this time, since it involves another actor, it can be 
+added as a <b><code>use case invocation</code></b>
+</p>
+<procedure>
+<img alt="clipboard-image-1739829658.png" src="ImprovedDiagramWithUseCaseinvocation.png" thumbnail="true"/>
+</procedure>
+<p>One key feature of the previous diagram is that it shows clearly the <b><code>main flow
+</code></b> of our use case. It can be easily understood as a representation of all steps that 
+have to be true for the use case to finish successfully. However, this means that the diagram 
+ignores all <b><code>alternative flows</code></b>, that in this case extend far from the user 
+space (log in or not logged in), but also towards the moderation and content verification 
+concerns.</p>
+<p>In this section, it is important to note that while we can leave conditions implicitly 
+defined, <i>like the version of the diagram shown in figure 5.15</i>, it is often recommended 
+not to do this as we can add information on the alternative flows. For example, in the case the 
+book review length is not okay (i.e., &lt; 10 characters), a separate, alternative flow, can be 
+presented in the diagram to show how information flows if any, or both, conditions are not 
+correct.</p>
+<p>As for the user case, clearly, the diagram requires more than just a simple corrective step. 
+First, we need to think about our domain model. Is there any object (as entities have to come 
+from there), that can handle the task of managing and verifying user sessions and passwords? If 
+this part exists, then it can be used directly in the graph, if it does not, we must create a 
+new domain conceptual class, and add it to the diagram. In the case of this use case, and this 
+domain model, said class does not exist and it must be added. Moreover, through this analysis, a 
+point can be raised that the Log In use case can be brought here, as we do not need to showcase 
+all the steps the log in use case shows, only call it and manage its results.
+</p>
+
+<procedure>
+<img alt="ImprovedUseCaseWithAlternativeFlows.png" src="ImprovedUseCaseWithAlternativeFlows.png" thumbnail="true"/>
+</procedure>
+<p>To conclude this series on the design process for a robustness diagram, the following diagram 
+showcases the full output of the entire process. Including the concept mentioned before of 
+appending further information to alternative paths in regards to UI and responses to faults.
+</p>
+
+<procedure>
+<img alt="FinalizedRobustnessDiagramForBookReviewUseCase.png" src="FinalizedRobustnessDiagramForBookReviewUseCase.png" thumbnail="true"/>
+</procedure>
+
 
 ## Monday 10th Class ― Activity Diagrams
-<p>An activity diagram can be thought of as a flow diagram with added infomration. The idea is that 
+<p>An activity diagram can be thought of as a flow diagram with added information. The idea is that 
 <b><code>a use case shows what the system needs to do, but the activity diagram shows how</code></b>. It is meant to 
 model processes and sequences of actions to complete a task within our system.
 </p>
