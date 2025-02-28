@@ -15,8 +15,10 @@
             <toc-element topic="Home-Study-2-―-Furthering-Our-Use-Case-Understanding.md"/>
         </toc-element>
         <toc-element topic="Class-5-―-Wednesday-Jan-29th-―Topic.md"/>
+        <toc-element topic="Class-6-―-Sequenc-Diagrams-―-Monday-Feb-24th.md"/>
     </toc-element>
     <toc-element toc-title="Project Descriptions">
         <toc-element topic="Project-1-―-Pizza-Delivery-System.md"/>
     </toc-element>
+    <toc-element topic="Project-1-―-Part-2―-Pizza-Delivery-System.md"/>
 </instance-profile>
