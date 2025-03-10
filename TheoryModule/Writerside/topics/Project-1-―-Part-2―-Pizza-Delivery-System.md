@@ -1317,7 +1317,547 @@ system will redirect the manager to the "Manage Restaurant Content" Dashboard.</
 </list>
 <img alt="DeletePromotionalCampaign.png" src="DeletePromotionalCampaign.png" thumbnail="true"/>
 </def>
-
 </deflist>
 </procedure>
 
+#### Robustness Analysis ― Second Phase
+<p>The second phase of the project began with a thorough review of the use cases defined for all 
+secondary, but just as important, actors that had been identified in the system. Our model 
+defined these actors as externals due to their nature as services that could be acquired from 
+any vendor rather than having proprietary AI services. For this reason, the use cases defined 
+mostly tackle the issues that arise through internet communication, shortages in the services 
+and the processing of their data. Taken together with the previous use cases, these are  
+related to the proposed backend of the app, sure in the previous use cases we mentioned 
+different views that could arise when there is an issue in either of the services, and how the 
+ssytem would inform the user of such problems, but the problems mentioned in these use cases, 
+define the process of how we are going to handle these during implementation.
+</p>
+<p>To do this, we divided the work into two separate groups of actors that are related to 
+different view points of the app. The firs group, comprising the GPS System, the Payment 
+Processing System, the Authentication Service, and Security Manager, all have something to do 
+with the user, and delivery driver’s interaction with our application. On the other hand, the 
+group comprising the Ingredient, Storage, Delivery and Cellular Network, are all actors whose 
+relationship is closely tied to the backend of our application with respect to manager's 
+interactions with our app.  
+</p>
+<p>Granted, these groupings are merely symbolic and useful from a design point of view, all of 
+these components cannot be segregated as they closely rely on each other to function in an 
+orchestra of operations that allow the app to work. The following are the use cases that we have 
+defined in terms of all of these actors <i><code>improved and with both robust and 
+activity diagrams present</code></i>
+</p>
+
+<procedure title="Use Case Listing ― Service Actors ― Robustness Diagrams">
+<deflist type="full" collapsible="true">
+<def title="GPS System Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Tracking Delivery Driver Location">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The system periodically requests GPS location data from the delivery driver's device. The GPS collects the latitude 
+and longitude data and transmits it to the main server. The system then updates the live tracking map for customers 
+and administrators. Additionally, the estimated time of arrival (ETA) is recalculated and displayed to the user.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the GPS signal is lost, the system uses the last known location and provides hit-based updates until real-time 
+tracking resumes. If the driver's device is not connected to the network, the system attempts to obtain location 
+data less frequently and notifies the driver.
+</p></li>
+</list>
+
+<img alt="TrackingDeliveryDriverLocation.png" src="TrackingDeliveryDriverLocation.png" thumbnail="true"/>
+</def>
+<def title="Optimizing Delivery Route">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The system collects current GPS location data from all drivers. The data is then sent to DeliveryTracking and 
+traffic conditions and estimated delivery times are analyzed. Finally, the optimized route is sent to the delivery 
+driver's interface.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If external traffic data is not available, the system uses historical data to provide an estimated optimal route. If 
+the driver deviates from the suggested route, the system recalculates and offers a new optimized route.
+</p></li>
+</list>
+
+<img alt="OptimizingDeliveryRoute.png" src="OptimizingDeliveryRoute.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Security Manager Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="User Login Attempt Tracking">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user enters his or her credentials on the login page. The Security Manager logs the login attempt. If the attempt 
+is successful, access is granted. However, if multiple failed attempts occur, the system temporarily locks the 
+account and notifies the user.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If an account is locked due to repeated failed attempts, the user must follow a password recovery process. If the 
+login attempt comes from an unusual location or device, the system requests additional authentication.
+</p></li>
+</list>
+
+<img alt="UserLoginAttemptTracking.png" src="UserLoginAttemptTracking.png" thumbnail="true"/>
+</def>
+
+<def title="Session Management">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user logs into the system, which generates and securely stores a session token. During next requests, the 
+system verifies the token's validity. If the session expires, the user is logged out and must authenticate again.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If a user logs in from a second device, the system checks the policies in place (either single session or multiple 
+sessions) and acts accordingly. Additionally, if a session remains inactive for a predefined period, the system 
+automatically logs the user out.
+</p></li>
+</list>
+
+<img alt="SessionManagement.png" src="SessionManagement.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Payment Processing Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Process Customer Payment">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The customer selects a payment method at checkout. The system then securely transmits the payment details to the 
+Payment Processing System. The Payment Processing System validates the data and authorizes the transaction. Once 
+successfully authorized, the order is confirmed and a receipt is generated for the customer.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the payment fails, the system notifies the user and requests an alternative payment method. In case of suspected 
+fraud, the system declines the transaction and notifies the Security Manager.
+</p></li>
+</list>
+
+<img alt="ProcessCustomerPayment.png" src="ProcessCustomerPayment.png" thumbnail="true"/>
+</def>
+
+<def title="Refund Processing">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+The user requests a refund through customer service. The system then verifies the order details and eligibility for 
+the refund. If everything is valid, the request is sent to the Payment Processing System for execution and the user 
+is notified of the refund status.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If the refund request is denied, the system provides a detailed reason. If the payment method used does not allow 
+refunds, the system offers store credit or another form of compensation.
+</p></li>
+</list>
+
+<img alt="RefundProcessing.png" src="RefundProcessing.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Authenticator Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Validate User Credentials">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user enters his or her username and password. The system securely transmits these credentials to the 
+Authentication Service. The Authentication Service validates the credentials and returns an authentication token. If 
+authentication is successful, the system grants the user access.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If authentication fails, the system prompts the credentials to be re-entered or a password recovery process to be 
+initiated. If multifactor authentication (MFA) is enabled, the system requests additional verification.
+</p></li>
+</list>
+
+<img alt="ValidateUserCredentials.png" src="ValidateUserCredentials.png" thumbnail="true"/>
+</def>
+<def title="Manage Token Expiry and Renewal">
+<list>
+<li><b><format color="CornFlowerBlue">Main Flow</format></b>: 
+<p>
+A user remains active in the system. Before the token expires, the system requests a renewal from the Authentication 
+Service, which verifies the user's activity and grants a new session token.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If token renewal fails, the user is logged out and must authenticate again. If suspicious activity is detected, the 
+system invalidates all active tokens and forces re-authentication.
+</p></li>
+</list>
+
+<img alt="ManageTokeExpiryAndRenewal.png" src="ManageTokeExpiryAndRenewal.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Ingredient Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Statistics and Predictions">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>: 
+<p>
+The system receives a request from a top-level, user-facing interface about a request for the latest AI-Driven Report. 
+The system relays the call to the underlying IngredientUsageForecastService. The underlying IngredientUsageForecastService 
+system relays the processing call to the OrderAnalyzer instance it is composed of. The underlying OrderAnalyzer compiles and 
+analyzes current deliveries and a set of past deliveries based on its prediction guidelines. The underlying OrderAnalyzer 
+wraps the information in a business-logic-defined format and returns it to the IngredientUsageForecastService. The 
+IngredientUsageForecastService retrieves all information and stores it within an IngredientUsageRecord. Additionally, the 
+IngredientUsageForecastService stores the information within the DatabaseManagementSystem for further polling. The system 
+returns this new IngredientUsageRecord to the upper-level function caller.
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>: 
+<p>
+During the call forwarding to the OrderAnalyzer instance, the system will attempt to connect to the underlying 
+DatabaseManagementSystem at most three times. After three unsuccessful attempts, the system will return a failure state signal.
+</p></li>
+</list>
+
+
+<img alt="RequestStatisticsAndPredictions.png" src="RequestStatisticsAndPredictions.png" thumbnail="true"/>
+<img alt="RequestStatisticsAndPredictionsROB.png" src="RequestStatisticsAndPredictionsROB.png" thumbnail="true"/>
+<img alt="RequestStaticsAndPredictionsACT.png" src="RequestStaticsAndPredictionsACT.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Inventory Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Storage Quantity and Replenishment Estimation">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>: 
+<p>
+The system receives a request from a top-level, user-facing interface about a request for the latest AI-Driven Report. 
+The system relays the call to the underlying InventoryForecastService. The underlying InventoryForecastService relays the 
+processing call to its underlying OrderAnalyzer. The underlying OrderAnalyzer compiles and analyzes current deliveries and 
+a set of deliveries based on its prediction guidelines. The underlying OrderAnalyzer wraps the information in a 
+business-logic-defined format and returns it to the InventoryForecastService. The InventoryForecastService system retrieves 
+that information and wraps it in an InventoryForecastRecord. The InventoryForecastService system stores the information 
+within the DatabaseManagementSystem for further polling. The system returns this new InventoryForecastRecord to the upper-level function caller.
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>: 
+<p>
+During the call forwarding to the OrderAnalyzer instance, the system will attempt to connect to the underlying 
+DatabaseManagementSystem at most three times. After three unsuccessful attempts, the system will return a failure state signal.
+</p></li>
+</list>
+
+<img alt="RequestStorageQuantityAndReplenishmentEstimationRobust.png" 
+src="RequestStorageQuantityAndReplenishmentEstimationRobust.png" thumbnail="true"/>
+<img alt="RequestStorageQuantityEstimationACT.png" src="RequestStorageQuantityEstimationACT.png" 
+thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Delivery Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request AI-Optimized Delivery Route">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>: 
+<p>
+The system receives a request from a top-level, user-facing interface about a request for the latest AI-Driven Report. 
+The system relays the call to the underlying DeliveryForecastService. The underlying DeliveryForecastService system relays 
+the processing call to its DeliveryAnalyzer internal composited instance. The underlying DeliveryAnalyzer compiles and 
+analyzes current deliveries and a set of deliveries based on its prediction guidelines to find an optimized delivery route. 
+The underlying DeliveryAnalyzer wraps the information in a business-logic-defined format and returns it to the 
+DeliveryForecastService. The DeliveryForecastService retrieves all information and stores it within a 
+RouteOptimizationRecord. The system returns this new RouteOptimizationRecord to the upper-level function caller.
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>: 
+<p>
+During the call forwarding to the DeliveryAnalyzer instance, the system will attempt to connect to the underlying 
+DatabaseManagementSystem at most three times. After three unsuccessful attempts, the system will return a failure state signal.
+</p></li>
+</list>
+
+<img alt="RequestRouteOptimization.png" src="RequestRouteOptimization.png" thumbnail="true"/>
+<img alt="RouteOptimizationROB.png" src="RouteOptimizationROB.png" thumbnail="true"/>
+<img alt="RouteOptimizationACT.png" src="RouteOptimizationACT.png" thumbnail="true"/>
+</def>
+<def title="Perform On-demand Delivery Analysis">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>: 
+<p>
+The system receives a request from a top-level, user-facing interface about a request for the latest AI-Driven Report. 
+The system relays the call to the underlying DeliveryForecastService. The underlying DeliveryForecastService system relays 
+the processing call to its DeliveryAnalyzer internal composited instance. The underlying DeliveryAnalyzer compiles and 
+analyzes current deliveries and a set of deliveries based on its prediction guidelines. The underlying DeliveryAnalyzer wraps 
+the information in a business-logic-defined format and returns it to the DeliveryForecastService. The DeliveryForecastService 
+retrieves all information and stores it within a RouteOptimizationRecord. Additionally, the DeliveryForecastService 
+stores the information within the DatabaseManagementSystem for further polling. The system returns this new 
+RouteOptimizationRecord to the upper-level function caller.
+</p>
+</li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>: 
+<p>
+During the call forwarding to the DeliveryAnalyzer instance, the system will attempt to connect to the underlying 
+DatabaseManagementSystem at most three times. After three unsuccessful attempts, the system will return a failure state signal.
+</p>
+</li>
+</list>
+<img alt="OnDemandDeliveryAnalysisROB.png" src="OnDemandDeliveryAnalysisROB.png" thumbnail="true"/>
+<img alt="OnDemandDeliveryAnalysisACT.png" src="OnDemandDeliveryAnalysisACT.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+<def title="Cellular Network Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Communicate Route">
+<list>
+<li><b><format color="CornFlowerBlue">Normal Flow</format></b>: 
+<p>
+When an OptimizedRouteRecord is produced by the Request AI Optimized Delivery Route, the record containing the route 
+must be handed to the delivery driver. To achieve this, the system will create an APICall for the cellular network using the 
+OptimizedRouteRecord and order-associated DeliveryTracking. The resulting APICall will be inserted into a CallSenderQueue, 
+which stores all pending calls waiting to be sent. 
+<br/>
+The CallSenderQueue requests network availability from the CellularNetworkConnection, the interface connecting the cellular network
+with the system. If the network is available, the system sends the API call through the CellularNetworkConnection interface.
+The cellular network is then expected to confirm the receipt of the message by notifying the CellularNetworkConnection.
+If the confirmation is received before a timeout occurs, the system will signal to the CallSenderQueue that it is safe to send a new message.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>: 
+<p>
+If a timeout occurs before receiving a confirmation notification from the cellular network or the cellular network notifies 
+“failed sending,” the system will request the resending of the message up to three times.
+</p></li>
+<li><b><format color="CornFlowerBlue">Exception Flow</format></b>: 
+<p>
+If the cellular network isn’t available, the system will communicate a "fallen network" message. If the resend message fails 
+after three failed attempts, the system will communicate a "communication error" message.
+</p></li>
+</list>
+
+<img alt="CommunicationUseCase.png" src="RequestRouteOptimization.png"  thumbnail="true"/>
+<img alt="CommunicateRouteROB.png" src="CommunicateRouteROB.png" thumbnail="true"/>
+<img alt="CommunicateRoouteACT.png" src="CommunicateRoouteACT.png" thumbnail="true"/>
+</def>
+</deflist>
+</def>
+</deflist>
+</procedure>
+
+
+## Annexes
+<p>The following is a singular annexe for this part of the project where we expand on the new 
+classes that were included in an updated version of the domain model. For the most part, the 
+classes that have been added have been done to so simplify or align the communication process 
+between service layers and view layers. In addition, classes have been added to represent 
+communication objects and internal inforamtion like Session Tokens, or Security Alerts that are 
+used within upper level use cases</p>
+<procedure title="Updated Domain Model">
+<img alt="UpdateDomainModelPart2PizzaDeliverySystem.png" 
+src="UpdateDomainModelPart2PizzaDeliverySystem.png" thumbnail="true"/>
+</procedure>
+<note><p>The original descriptions, added into the part one of this project, are still 
+valid for all classes aside the ones to be mentioned now. These previous classes have 
+allowed us to architect the entire application, while the new ones focused on 
+streamlining communication</p></note>
+<procedure title="Domain Model ― New Classes Descriptions">
+<deflist type="full" collapsible="true">
+<def title="ContentManagementSubsystem">
+<p>This class is simply a communication layer, it is a representation added to signify the 
+existance of an underlying system to which the manager sends information, and from which the 
+manager gathers information. It is not a class that will be implemented as a singular class, 
+rather in implementation it will most likely become  <b><code>several classes</code></b>  to 
+handle the underlying system</p>
+</def>
+<def title="WarehouseManagerSubsystem">
+<p>Similarly to the ContentManagementSubsystem, this class is simply a representation of the 
+underlying system assigned to the overall branch of the Warehouse Management system in the 
+application</p>
+</def>
+<def title="CustomerManagementSubsystem">
+<p>Representation of a series of underlying classes to be designed to handle the communication, 
+persistency, and other requirements that the customer maangement must handle.</p>
+</def>
+<def title="DeliveryManagementSubsystem">
+<p>Representation of a series of underlying classes to be designed to handle the communication, 
+persistency, and other requirements that the delivery management part of our app must handle.</p>
+</def>
+<def title="SecurityManagementSubsystem">
+<p>As with the rest subsystem representations, this class is a representation to the series of 
+classes that will be required, or at least to the subsystem that will be required to handle 
+security management concerns.</p>
+</def>
+<def title="SupportTicket">
+<p>This class was added as a response to different use cases requirying an object to communicate 
+with, management, and modify when handling cases of client Support Alert. Due to our application 
+architecture, the customer management subsystem would have a way for the customer to communicate 
+to a customer management representative in order to resolve issues. For this reason this class 
+was defined to represent this kind of interactions, and to allow interactions with the system to 
+utilize an object.
+</p>
+<list>
+<li><b><format color="CornFlowerBlue">customerUUI</format></b>: UUID attached to the customer 
+that raised the SupportTicket.</li>
+<li><b><format color="CornFlowerBlue">customerProvidedReason</format></b>: Text representing 
+the message, or reason, attached to the Support Ticket that was opened by a customer.</li>
+<li><b><format color="CornFlowerBlue">customerOrderUniqueID</format></b>: Internal ID 
+identifying this support ticket and can be used later for storage, polling and resolution, etc.
+</li> 
+</list>
+</def>
+<def title="IngredientUsageRecord">
+<p>This Record is a representation of the <b><code>new underlying communication 
+mechanisms</code></b> that have been added into the model to facilitate communication between the 
+underying IngredientUsageForecastService towards the Content and Warehouse managers, through 
+their required interfaces. The idea of this record is to simply represent a way for services to 
+communicate information, immutably, and in a structured format</p>
+<list>
+<li><b><format color="CornFlowerBlue">usageRecordPredictedSalesIncreases</format></b>: This is a 
+parameter that can be present, or not, depending on the caller of the underlying subsystem, this 
+represents the predicted sales increases that a product can have, useful for statistical 
+analysis and management decision making that managers do.
+</li> 
+<li><b><format color="CornFlowerBlue">usageRecordStatisticsPerIngredient</format></b>: This is a 
+parameter that is representative of an statistical analysis done per ingredient that can be 
+used to handle information transmission and business decision making.
+</li> 
+<li><b><format color="CornFlowerBlue">usageRecordSuggestedRotationSchedule</format></b>: This 
+si the last parameter of this record, useful to the warehouse manager that is used to 
+represent information useful to handle ingredient rotation and management.</li> 
+</list>
+</def>
+<def title="InventoryForecastRecord">
+<p>This Record is used to transmit information only useful to the warehouse manager, this is a 
+per ingredient analysis record that holds information about maximum, minimum and rotation 
+schedules that can be used per ingredient. It is similar to the IngredientUsageRecord, but this 
+works on the level of the inventory, i.e., to the amount that would be required to correctly 
+handle orders.</p>
+<list>
+<li><b><format color="CornFlowerBlue">inventoryRecordMinimumIngredientStorageAmount</format></b
+>: As mentioned, this is a way to represent the minimum amount of an ingredient that should be 
+stored based on an inventory analysis done with relationship to orders.
+</li> 
+<li><b><format color="CornFlowerBlue">inventoryMaximumIngredientStorageAmount</format></b>: As 
+mentioned, this is a way to represent the maximum amount of an ingredient that should be stored 
+based on an inventory analysis done with relationship to orders.
+</li>
+<li><b><format color="CornFlowerBlue">inventoryRecordSuggestedRotationSchedule</format></b>: 
+Like before, this is a useful communication parameter that retruns an informative rotational 
+schedule defined by the AI service providers.</li> 
+</list>
+</def>
+<def title="APIRequest">
+<p>This is a representative class that includes a mention to the process of API request towards 
+th AI services. Given that our model for this application includes a combination of local 
+processing and external API services, we required this class to represent the communication 
+process between services, and the upper view layers.</p>
+<list>
+<li><b><format color="CornFlowerBlue">apiRequestInformation</format></b>: This is a 
+representative parameter that would hold parameter information that would be required to 
+handle an API communication towards the services that our application requires.</li>
+<li><b><format color="CornFlowerBlue">apiRequestSenderInformation</format></b>: An informative 
+parameter representing information about the sender of the given request.
+</li> 
+</list>
+</def>
+<def title="DatabaseManagementSystem">
+<p>The database management system class represents the means of data persistence that the 
+application had previously lacked. As noted in some of the use cases in part one of this project,
+we had neglected or took as external to the initial model, the topic of data persistence. 
+However, now we have included it as an entry point to the database system within the application.
+</p>
+<list>
+<li><b><format color="CornFlowerBlue">DBMSConnectionURL</format></b>: Parameter that refers to 
+the connection URI or URL to the internal database </li>
+<li><b><format color="CornFlowerBlue">DBMSAuthenticationToken</format></b>: Parameter that 
+represents the authentication token of the internal database connection </li>
+<li><b><format color="CornFlowerBlue">DBMSEncryptionRules</format></b>: Parameter that 
+represents any encryption rules for the information to be stored in the database.</li>
+<li><b><format color="CornFlowerBlue">DBMSReplicationRules</format></b>: Parameter that 
+represents any and all data replication rules taht the database uses.</li> 
+</list>
+</def>
+<def title="ChangeLog">
+<p>Class used to represent the way the system stores any and all chages done to administrative 
+subsystems.</p>
+<list>
+<li><b><format color="CornFlowerBlue">administrativeAccountUUID</format></b>: Parameter 
+representative of the UUID associated with the account of a manager that has performed a change.
+</li>
+<li><b><format color="CornFlowerBlue">administrativeChangesRecord</format></b>: Parameter 
+representative of the record of changes that were done. </li> 
+<li><b><format color="CornFlowerBlue">administrativeChangesDate</format></b>: Parameter 
+representative of the date in which the changes were done.</li>
+<li><b><format color="CornFlowerBlue">administrativeChangesSubsystemID</format></b>: Parameter 
+representative of the subsystem ID in which the changes were executed.</li> 
+</list>
+</def>
+<def title="SecurityAlert">
+<p>A class representative of an alert that was raised due to incorrect log in parameters, 
+multiple incorrect log in attempts, etc. The idea of this class is to handle any and all 
+security alerts raised by the security manager.</p>
+<list>
+<li><b><format color="CornFlowerBlue">alertCustomerUUID</format></b>: Parameter representastive 
+of the customer UUID to whome the alert is associated to.</li>
+<li><b><format color="CornFlowerBlue">alertCustomerLastLogin</format></b>: Parameter 
+representative of the customer’s last successful login into the system.</li>
+<li><b><format color="CornFlowerBlue">alertReason</format></b>: Parameter used to represent the 
+reason by which the security manager raised this alert. It is a useful parameter, helpful to 
+the Customer Manager to review cases and filter, etc.</li> 
+</list>
+</def>
+<def title="SessionToken">
+<p>A session token was one of those classes that was not present in the original model. This 
+class is now used to represent a user's log in connection, and a class that allows the system to 
+handle connections, as well as authentication without having to ask the user to authenticate 
+again through login.
+</p>
+<list>
+<li><b><format color="CornFlowerBlue">sessionTokenUUID</format></b>: Parameter representing the 
+UUID of a given token, this is useful for token storage and transmission, as well as validation 
+</li> 
+<li><b><format color="CornFlowerBlue">sessionTokenUserUUID</format></b>: Parameter that 
+represents the user UUID that is associated to the SessionToken, this ties together the token 
+to the user and can be used for validation</li> 
+<li><b><format color="CornFlowerBlue">sessionTokenCreationTime</format></b>: Parameter that 
+represents the user token’s creation time, parameter useful for time based session token 
+management, or deletion</li>
+<li><b><format color="CornFlowerBlue">sessionTokenDeletionTime</format></b>: Parameter that 
+represents the user’s token’s deletion time.</li> 
+</list>
+</def>
+<def title="AddressValidationSystem"><p>
+This class is used to represent a validation system that is used under the hood to validate the 
+addresses provided by any users. It is modeled in the light of the real AddressValidator API 
+that is offered by Google to validate addresses through an API.
+</p>
+<list>
+<li><b><format color="CornFlowerBlue">addressValidatorAPICredentials</format></b>:  Parameter 
+defining the required API credentials required to use the validation API that is provided by 
+Google</li>
+<li><b><format color="CornFlowerBlue">addressValidatorAPIHandler</format></b>:  Parameter 
+defining a handler for the AddressValidatorAPI, this would be a parameter that represents 
+perhaps an internal class that could manage multithreaded and concurrent communication.</li> 
+</list>
+</def>
+<def title="BillingValidationSystem">
+<p>The BillingValidationSystem is used as a representative class to the connection to the 
+BillingValidator API that is also provided online as a tool for validating the billing 
+information that can be provided. In theory this would be somewhat validated depending on the 
+locality of the application, subjecting this class to local regulations</p>
+<list>
+<li><b><format color="CornFlowerBlue">billingValidatorAPICredentials</format></b>: Parameter 
+that represents the API credentials required to handle the connection and access to the 
+validation API used to validate billing information.</li>
+<li><b><format color="CornFlowerBlue">billingValidatorAPIHandler</format></b>:  Parameter that, 
+as in the case for the AddressValidationSystem, could represent an internal class instance that 
+is used to handle multiple concurrent API requests.
+</li> 
+</list>
+</def>
+</deflist>
+</procedure>
