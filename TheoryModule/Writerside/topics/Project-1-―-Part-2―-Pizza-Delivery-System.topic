@@ -1341,6 +1341,31 @@ activity diagrams present</code></i>
 </def>
 <def title="Security Manager Service Use Cases">
 <deflist type="full" collapsible="true">
+    <def title="Validate User Credentials">
+        <list>
+            <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
+                <p>
+                    The SecurityManager receives user's credentials. The SecurityManager reviews the credentials, first finding matches
+                    of the username within the database, and then comparing password hash matches. Upon verification, the system logs
+                    all information related to this login attempt and informs the CustomerManagementSubsystem. The system creates a
+                    SessionToken for the user. The system then returns an internal flag and the SessionToken to the caller of this
+                    use case, to indicate successful validation.
+                </p></li>
+            <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+                <p>
+                    During username review, if the system informs of an incorrect, blocked or abstent credential from the database.
+                    The SecurityManager signals the caller for further processing of this error.
+                </p>
+                <p>
+                    During password hash review, if the system identifies an incorrect hash, it will raise an internal flag and
+                    notify use case initializer for further processing.
+                </p></li>
+        </list>
+
+        <img src="UserLoginAttemptTracking.png" alt="UserLoginAttemptTracking.png" thumbnail="true"/>
+        <img alt="UserLoginAttemptTrackingROB.png" src="UserLoginAttemptTrackingROB.png" thumbnail="true"/>
+        <img alt="UserLoginAttemptTrackingACT.png" src="UserLoginAttemptTrackingACT.png" thumbnail="true"/>
+    </def>
     <def title="Validate Session Token">
         <list>
             <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
