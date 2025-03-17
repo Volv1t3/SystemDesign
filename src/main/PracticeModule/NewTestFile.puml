@@ -1,0 +1,14 @@
+@startuml
+state ResourceActive {
+    ResourceActive: lowMemory / cleanupCache()
+    ResourceActive: resourceWarning / optimizeUsage()
+}
+@enduml
+
+@startuml
+state DisplayingForm {
+    DisplayingForm: validateField / showFieldError()
+    DisplayingForm: updateValue / refreshDisplay()
+    DisplayingForm: formatInput / reformatField()
+}
+@enduml

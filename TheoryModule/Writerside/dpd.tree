@@ -4,7 +4,8 @@
 
 <instance-profile id="dpd"
                  name="Design Patterns | Documentation"
-                 start-page="starter-topic.md">
+                 start-page="starter-topic.md"
+                 is-library="true">
 
     <toc-element topic="starter-topic.md"/>
     <toc-element toc-title="Unit One">
@@ -17,6 +18,7 @@
         <toc-element topic="Class-5-―-Wednesday-Jan-29th-―Topic.md"/>
         <toc-element topic="Class-6-―-Sequenc-Diagrams-―-Monday-Feb-24th.md"/>
         <toc-element topic="Class-7-―-State-Machines-―-Monday-Mar-10th.md"/>
+        <toc-element topic="Class-8-―-Class-Diagrams-―-Monday-Mar-17th.topic"/>
     </toc-element>
     <toc-element toc-title="Project Descriptions">
         <toc-element topic="Project-1-―-Pizza-Delivery-System.md"/>

@@ -117,7 +117,17 @@ the context objct and the parameters of the triggering event, or any other featu
 scope.</code></b></li>
 </list>
 <tip>
-<p>A Context Object is a specialized instance of a Behaviored Classifier that maintains the current state of a state machine and manages state transitions based on events and conditions. As a Behaviored Classifier, it encapsulates both structural features (attributes and associations) and behavioral features (operations and signals) that can be referenced within the state machine's transitions and states. The Context Object provides the execution environment for the state machine, making its properties and methods available to guard conditions and behavior expressions during transitions. Within the state machine, transitions can access and modify the Context Object's attributes, invoke its operations, and evaluate its associations to determine if guard conditions are met or to execute behavior expressions. This tight integration between the Context Object and its state machine ensures that the state-dependent behavior remains cohesive and properly encapsulated within the broader system architecture.</p>
+<p>A Context Object is a specialized instance of a Behaviored Classifier that maintains the 
+current state of a state machine and manages state transitions based on events and conditions. 
+As a Behaviored Classifier, it encapsulates both structural features (attributes and 
+associations) and behavioral features (operations and signals) that can be referenced within the 
+state machine's transitions and states. The Context Object provides the execution environment 
+for the state machine, making its properties and methods available to guard conditions and 
+behavior expressions during transitions. Within the state machine, transitions can access and 
+modify the Context Object’s attributes, invoke its operations, and evaluate its associations to 
+determine if guard conditions are met or to execute behavior expressions. This tight integration 
+between the Context Object and its state machine ensures that the state-dependent behavior 
+remains cohesive and properly encapsulated within the broader system architecture.</p>
 </tip>
 </tip>
 </note>
@@ -279,6 +289,9 @@ border</code></b></p>
 </tab>
 </tabs>
 </procedure>
+<note>In addition, note that transitions going out of an <b><code>initial pseudo state, do not have 
+guards or triggers</code></b>, these are thought subsequent of the entry point and they can only have some 
+<b><code>side effect</code></b></note>
 
 <img alt="OrthogonalCompositeState.png" src="OrthogonalCompositeState.png" thumbnail="true"/>
 </def>
@@ -407,6 +420,90 @@ sense there are four transition variations available</p>
 </step>
 </procedure>
 
+#### Deeper look into Transitions: How do Internal Transitions execute?
+<p><b>Internal transitions</b> represent behavioral responses within a state that execute without causing the state itself to exit and re-enter. This concept allows for efficient handling of events by maintaining the current state context and avoiding the overhead of exit/entry actions, effectively encapsulating localized behaviors while preserving the state's ongoing activities and hierarchical position in the state machine.</p>
+<note>The use of internal transitions is to handle variation of behavior within the state. These can model error 
+handling, communication logic, logging logic, validation logic, etc. The idea is to model these behaviors using 
+internal transitions such that we do not disturb the overarching flow adn state of the state</note>
+<p>As such, internal transitions are particularly useful for modeling several common scenarios:</p>
+<procedure>
+<list columns="2">
+<li>Event Handling Within States</li>
+<li>Error handling or Recovery Actions</li>
+<li>Status updates or progress monitoring</li>
+<li>Logging or diagnostic operations</li>
+<li>Data validation checks</li>
+<li>Resource Management</li>
+<li>UI State Management</li>
+<li>System Monitoring</li>
+<li>Incremental Processing</li>
+</list>
+</procedure>
+<p>For this reason, these internal transitions, as they define some kind of behavior associated with them, it is 
+more useful to have them as controllers for a state that has a do activity. FOr instante, if we have an input field 
+in a state, we might be able to handle validation of the data through internal transitions.</p>
+
+<procedure title="Some Examples on Internal Transitions" id="some_examples_on_internal_transitions" collapsible="true">
+<list>
+<li><b><format color="CornFlowerBlue">Validation State Management</format></b>:
+<p><b>Form Validation State Management</b> represents a common UI pattern where internal transitions handle input validation, formatting, and error display without disrupting the form's overall state. This concept allows for efficient user feedback and data validation while maintaining the form's active state, effectively managing the user interaction flow without requiring complete state changes for every input event.</p>
+
+```PlantUML
+@startuml
+state "DisplayingForm" as DF {
+    state "ValidInput" as VI
+    state "InvalidInput" as II
+    
+    [*] -> VI
+    
+    DF : validateField / showFieldError()
+    DF : formatInput / reformatField()
+    DF : updateValue / refreshDisplay()
+    
+    VI -> II : validateField [isInvalid] / showFieldError()
+    II -> VI : formatInput [isValid] / reformatField()
+}
+@enduml
+```
+</li> 
+<li><b><format color="CornFlowerBlue">System Monitoring State Management</format></b>: 
+<p><b>System Monitoring State Management</b> demonstrates how internal transitions can handle continuous system health checks and resource management within an active system state. This pattern enables real-time monitoring and adjustment of system resources while maintaining system operation, effectively implementing self-healing and adaptive behaviors without transitioning between different operational states.</p>
+
+```plantuml
+@startuml
+state "SystemRunning" as SR {
+    state "NormalOperation" as NO
+    state "ResourceOptimization" as RO
+    
+    [*] -> NO
+    
+    SR : healthCheck / updateStatus()
+    SR : performanceAlert / adjustResources()
+    SR : heartbeat / updateTimestamp()
+    
+    NO -> RO : performanceAlert / adjustResources()
+    RO -> NO : healthCheck / updateStatus()
+}
+@enduml
+
+```
+</li> 
+</list>
+</procedure>
+<tip>The previous examples, provided by our friend Amazon Q involve many details that are important to both note, 
+understand and apply in demystifying internal transitions</tip>
+<p>The examples above, showcase a single state which not only handles internal transitions, but also inner states, 
+<b><code>transforming these states into composite states </code></b>, where what we have is not just a singular 
+state (in case of the first example <i>DisplayingForm</i>), rather we have a complex state that demonstrates the 
+inner workings of te composite state</p>
+<p>We begin the first example by taking a look at the information presented in the upper level compartment, while 
+this is not the correct place to put them, as above would be an empty compartment with either some do activities or 
+entry or exit, it shows three inner transitions</p>
+<p>These <b><code>internal transitions: validateField / showFIeldError(), formatInput / reformatField(), 
+padteValue / refreshDisplay()</code></b>, are all internal transitions that showcase some of the transitions that 
+are handled <b><code>internally within ovearching state</code></b>. These transitions are then further used within 
+the composite states compartment that illustrates how these are used to transition between inner state ValidInput 
+and InvalidInput</p>
 
 ### Introduction To State Machines: Submachines
 <p>One additional component, which often ties in with the idea of composited states and orthogonal states is the 
@@ -489,36 +586,287 @@ have seen in class up to this moment</p>
 <p>This marks the starting point of state machine, compound state or orthogonal region in a compound state. It is 
 represented by a <b><code>small solid circle</code></b>. The idea of this seudo state is <i><code>it 
 transitions to the first active state when the system starts</code></i></p>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm09.GIF" thumbnail="true"/>
 </tab>
 <tab title="Terminal Pseudo State">
 <p>This marks that the execution of this state machine by means of its context object is terminated. This indicates 
 that the state machine will not perform any more transitions or state changes. This is represented by a 
 <b><code>line with one end as a cross</code></b></p>
 
-<img alt="TerminalStates.png" src="TerminalStates.png" thumbnail="true"/>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm14.GIF" thumbnail="true"/>
 </tab>
 <tab title="Entry Point"><p>This marks the entry point into a state machine or a composite state. The idea of 
 this section is that each state machine or composite state should have at most a single transition into the 
 same region. This symbol is shown as a <b><code>small circle on the border of the state machine 
-diagram or composite state, with a name associated to it.</code></b></p></tab>
+diagram or composite state, with a name associated to it.</code></b></p>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm10.GIF" thumbnail="true"/>
+</tab>
 <tab title="Exit Point">This marks the exit point of a state machine or a composite state. This indicates that the 
 machine or submachine or composite state will immediately exit and head to the transition defined coming out of the 
 symbol for this state, which is <b><code>a circle with a cross within</code></b>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm11.GIF" thumbnail="true"/>
 </tab>
+</tabs>
+<!-- Separation for Choice, Fork, Join and Junction -->
+<tabs>
 <tab title="Choice">This represents a decision point in the state machine where multiple transitions branch out. The choice pseudostate evaluates guard conditions on its outgoing transitions to select which path to take. It is depicted as a <b><code>diamond-shaped symbol</code></b> on the diagram.
-<img alt="DecisionNodeExample.png" src="DecisionNodeExample.png" thumbnail="true"/>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm12.GIF" thumbnail="true"/>
 </tab>
-<tab title="Fork">This splits an incoming transition into two or more parallel transitions that target vertices in different regions. The fork pseudostate allows the state machine to enter multiple states simultaneously. It is shown as a <b><code>short heavy bar</code></b> with multiple outgoing transitions.</tab>
+<tab title="Fork">This splits an incoming transition into two or more parallel transitions that target vertices in different regions. The fork pseudostate allows the state machine to enter multiple states simultaneously. It is shown as a <b><code>short heavy bar</code></b> with multiple outgoing transitions.
+<note>
+<p>Do note that as far as fork outgoing lines are concerned, <b><code>these cannot have any kind of 
+triggers or guards, only side effects</code></b></p>
+</note>
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm16.GIF" thumbnail="true"/>
+</tab>
 <tab title="Join">This combines multiple incoming transitions from different regions into a single outgoing transition. The join pseudostate waits for all parallel activities to complete before proceeding. It is represented by a <b><code>short heavy bar</code></b> with multiple incoming transitions.
 
 <img alt="ForkAndJoin.png" src="ForkAndJoin.png" thumbnail="true"/>
 </tab>
-<tab title="Junction">This chains together multiple transitions, allowing for more complex path constructions. The junction pseudostate can merge multiple incoming transitions or split an incoming transition into multiple outgoing ones with different conditions. It appears as a <b><code>small black circle</code></b> on the diagram.</tab>
+<tab title="Junction">This chains together multiple transitions, allowing for more complex path 
+constructions. The junction pseudostate can merge multiple incoming transitions or split an 
+incoming transition into multiple outgoing ones with different conditions. It appears as a 
+<b><code>small black circle</code></b> on the diagram.
+<img src="https://sparxsystems.com/images/screenshots/uml2_tutorial/sm13.GIF" thumbnail="true"/>
+</tab>
+</tabs>
+<tabs>
+<tab title="Deep History Pseudo State">
+<p>As with a shallow history state, the idea of this node is to represent a state that 
+<b><code>when present within a composite state machine</code></b>, will <b><code>call the most 
+recent state immediately before the most recent exit state
+</code></b>. In contrast to a shallow history state, this last exit state can be 
+<i><code>nested at any depth</code></i></p>
+<p>The idea is that these pseudo states represent the <b><code>most recent active 
+configuration of the composite state that directly contains this pseudostate</code></b>. As per 
+the docs from the official UML</p>
+<tip>
+<p>A composite can have <b><code>at most</code></b> one deep history node, and at most 
+<b><code>one transition</code></b> may originate from the history connector to the default deep 
+history state</p>
+</tip>
+<p>This state is often represented as a <b><code>capital H with a start next to it : 
+H*</code></b></p>
+
+<img alt="DeepHistoryStates.png" src="DeepHistoryStates.png" thumbnail="true"/>
+<p>The following would be an example of how this diagram could be read</p>
+<tip>
+<ol class=" "><li class=" ">    <p>The composite state 'Composite state 1' is entered and becomes active 
+(via the transition emanating from the <a href="">initial pseudostate</a>).    </p>
+</li><li class=" ">    <p>Composite states 'Composite state 2' and 'Composite state 3' are also 
+entered and become active (via the transitions emanating from the initial pseudostates).    </p>
+</li><li class=" ">    <p><a href="">Simple state</a> 'Simple state 1' is entered and becomes 
+active (via the transition emanating from the initial pseudostate).    </p>
+</li><li class=" ">    <p><a href="">Events</a> 'E1' is fired. The simple state 'Simple state 3' 
+is entered and becomes active.    </p>
+</li><li class=" ">    <p>Then the event 'E2' is fired. The simple states 'Simple state 2' and 
+'Simple state 4' are entered and become active.    </p>
+</li><li class=" ">    <p>After event 'E2' is fired, composite state 'Composite state 1' is 
+exited and simple state 'Simple state 5' is entered and becomes active.    </p>
+</li><li class=" ">    <p>Now the automatic transition leaving simple state 'Simple state 5' is 
+processed.    </p>
+</li><li class=" ">    <p>This leads to the composite state 'Composite state 1' being entered 
+again by its deep history. Now 'Simple state 2' and 'Simple state 4' are reactivated because the 
+state 'Composite state 1' was active before.    </p>
+</li></ol>
+</tip>
+<p>Lastly this would be the set of characteristics that matter when working with this diagram</p>
+<warning>
+<ul class=" "><li class=" ">    <p>Deep history works/functions recursively. That means that all 
+child states of the regions of the containing composite state that were active before, are 
+reactivated recursively (remember that the <a href="">shallow history</a> doesn't reactivate the children).    </p>
+</li><li class=" ">    <p>If the target of one of the default transitions is a composite state, 
+than it proceeds with the default entry of the composite state.    </p>
+</li><li class=" ">    <p>Composite states can contain at most one deep history.    </p>
+</li><li class=" ">    <p>The state machine is considered ill-formed if the containing composite 
+state has never been active before and it has no default transitions.    </p>
+</li></ul>
+</warning>
+</tab>
+<tab title="Shallow History Pseudo State">
+<p>In contrast to the deep history pseudo state, while this state does the exact same thing 
+(<b><code>recall the state before an exit</code></b>), the way it does it is much simpler. In 
+general, the shallow history state is allowed only to <b><code>return to states 
+in the same depth</code></b>. It is important to note that, as well as for the deep history 
+state, these states belong to <b><code>composite states not to a region within a 
+composite state</code></b></p>
+<note>
+A composite state can have <b><code>at most one</code></b> shallow history state. The state can 
+have at most <b><code>one transition coming from the history connector</code></b>. In all cases, 
+if the composite state was not active before the shallow history is reached (in the first time), 
+the default transitions are taken until we arrive back at the shallow history node
+</note>
+<img src="https://yasmine.seadex.de/images/download/attachments/2785317/shallow_history_context_1.png" thumbnail="true"/>
+<p>The above graph can be explained as follows</p>
+<tip>
+<ol class=" "><li class=" ">    <p>The composite state <i>Composite state 1</i> is entered and 
+becomes active (via the transition emanating from the initial pseudostate).</p>
+</li><li class=" ">    <p>Composite states <i>Composite state 2</i> and <i>Composite state 3</i> are also entered and 
+become active (via the transitions emanating from the initial pseudostates).</p>
+</li><li class=" ">    <p>Simple state <i>Simple state 1</i> is entered and becomes active (via the transition 
+emanating from the initial pseudostate.</p>
+</li><li class=" ">    <p>Event <i>E1</i> is fired. The state simple state <i>Simple state 3</i> is 
+entered and becomes active.</p>
+</li><li class=" ">    <p>Then the event <i>E2</i> is fired. The simple states <i>Simple state 2</i> and 
+<i>Simple state 4</i> are entered and become active.</p>
+</li><li class=" ">    <p>After event <i>E2</i> is fired, composite state <i>Composite state 1</i> is exited 
+and simple state 'Simple state 5' is entered and becomes active.    </p>
+</li><li class=" ">    <p>Now the automatic transition leaving the simple state <i>Simple state 5</i> is processed.   
+</p>
+</li><li class=" ">    <p>This leads to the composite state <i>Composite state 1</i> being entered again by its shallow 
+history. Now, because the composite state <i>Composite state 1</i> was active before, simple 
+states <i>Simple state 2</i> and <i>Simple state 4</i> are reactivated.    </p>
+</li></ol>
+</tip>
+<warning>
+<ul class=" "><li class=" ">    <p>Shallow history does not work recursively. This means that 
+all child states of the regions of the containing composite state that were active before, are 
+reactivated - but not their children (As opposed to deep history, where children are also reactivated).    </p>
+</li><li class=" ">    <p>If the target of one of the default transitions is a composite state, 
+than it proceeds with the default entry of the composite state.    </p>
+</li><li class=" ">    <p>Composite states can contain at most one shallow history.    </p>
+</li><li class=" ">    <p>The state machine is considered ill-formed if a shallow history is 
+reached while the containing composite state has never been active before and it has no default 
+transitions.    </p>
+</li></ul>
+</warning>
+</tab>
 </tabs>
 </procedure>
 
+### Introduction to State Machines: State Transition Tables
+<p>
+Often, state machines can be represented as state transition tables which show all states in a table, repeating them 
+as an adjacency matrix showing which transition takes which state to another. The idea is to have a matrix 
+representation of <b><code>states and the transitions that take the execution from one to another</code></b>. Using 
+the information that is provided in this table one can follow the state machine diagram, to some extent, in the same 
+way as if we were reading them directly.
+</p>
+<note>Even if we have internal composited states and transitions have to present in the table showing what state 
+we have to go to when these transitions arrive.</note>
+<p>In general, the table structured in a dissimilar way to the simpler state diagrams from finite state automata. 
+<b><code>Rather, these tables show the current state, incoming trigger, guard, action, an the next state</code></b>, 
+like a database table, not like a true matrix. Nevertheless, if we take a look at the current state and next state 
+columns we can still see the original matrix representation
+</p>
 
-### Introduction to State Machines: Transition-Oriented View
+<procedure title="Representation of a State Transition Table" id="representation_of_a_state_transition_table">
+
+<deflist type="full">
+<def title="State Diagram">
+
+<img alt="InfoExampleStateOne.png" src="InfoExampleStateOne.png" thumbnail="true"/>
+</def>
+<def title="State Transition Table">
+
+<img alt="InfoExampleStateTwo.png" src="InfoExampleStateTwo.png" thumbnail="true"/>
+</def>
+</deflist>
+</procedure>
+<p>As can be noted through the graphs, the concepts of these tables is to give us a view of the 
+transitions, why they happen, what made them happen, and what guard had to be true for us to 
+transition. They can be used to understand a model in terms of changes in states rather than a 
+complex graph of lines and symbols. Clearly, both the graphical and tabular view showcase the same 
+information, thought I would posit that the second version is much cleaner, specially if we have 
+a deep hierarchy of nested states.
+</p>
+
+### Introduction to State Machines: State Naming
+<p>
+The concept of naming a state, although not directly related to building a state machine, is an 
+important aspect that is often used and explored when we are working on defining the states in 
+our machine. In general, <b><code>these often change with the type of machine we are 
+using</code></b>, for instance the language we use might change in protocol state machines 
+compared to behavioral state machines.</p>
+<p>In general, the main rule for state naming is that we should name it after the 
+<b><code>criteria for defining the state</code></b>, like for a Person, behavior context, we 
+would have states that maybe come across as <i><code>isTeenager, isADult, 
+isSeniorCitizen</code></i>, which might be tied to a condition (guard) statement</p>
+<p>However this can also be changed and the name could be based on the last operation handled by 
+the context object.
+</p>
+
+#### State Naming: Mapping Parts of Speech to Text
+<p>Despite the information present on the slides being somewhat helpful in determining the way 
+we should name transitions, states, etc., there are still other rules that we might find useful 
+when going down from a high level use case towards a lower level state machine description of 
+each actor, action, state and transition. </p>
+<note>Naming always comes down to semantics, <b><code>specially about the way we 
+use state machines and how expressive we want our diagrams to be</code></b></note>
+
+<procedure title="Mapping Parts of Speech to State Machines" 
+id="mapping_parts_of_speech_to_state_machines" collapsible="true">
+
+<deflist type="wide">
+<def title="States">
+<p>States are typically handled using <b><code>nouns or adjetives</code></b>. As these represent 
+different conditions of being, they are often named with nouns or adjectives that 
+<b><code>describe the status or quality of the system</code></b>
+</p>
+<note>A state can also be named after a long-performing actiivty that running while in the 
+state, like <b><code>Idle, Cruising, etc.</code></b>. For this reason, if the operaion is 
+ongoing, we often want gerund verbs that end in <b>ing</b>, to represent the name of an 
+ongoing activity.</note>
+<p>Examples can be: <b><code>idle, loading, authenticated or error</code></b></p>
+</def>
+<def title="Event/Transitions">
+<p>Events and or transitions are usually named with verbs. Since these <b><code>cause state 
+transitions
+</code></b>, they are actions or occurrences, so they best be named with verbs.</p>
+<p>Examples can be <b><code>submit, cancel, fail, load, sign in, or clear form data</code></b></p>
+</def>
+<def title="Actions">
+<p>Actions are operations <b><code>executed in response to events or state 
+transitions (like behavior specifications in a transition definition)</code></b>. To name these, 
+we use <i>verb phrases</i> that describe the action that is being taken.
+</p>
+<p>Exaxmples can be <b><code>sendRequest, displayError or updateData</code></b></p>
+</def>
+<def title="Guards">
+<p>
+Given that guards are conditional guards that determine if a transition should occur, they can 
+<b><code>be named with adjectives or past participles describing the condition being met</code></b>
+</p>
+<p>Examples can be <b><code>isLoggedIn, hasValidData or isExpired</code></b></p>
+</def>
+<def title="Parent States">
+<p>Parent states are the higher level holder states that within themselves hold various smaller 
+state machines or states. In this sense, a parent state is one that holds within it substates 
+much like a composite state would hold within it more states and even whole state machines.
+</p>
+<p>In this case, these can be named using compound nouns like <b><code>Viewing 
+Shopping Cart</code></b> where child states could be <b><code>Empty or Populated</code></b></p>
+</def>
+<def title="Invoked Actors">
+<p>Often, a state machine might invoke an APi or some kind of service, if this is the case we 
+call them <b><code>invoked actors</code></b>, and as such the labels should use nouns or gerunds,
+like <b><code>fetchingData, or userAuthentication</code></b>
+</p>
+</def>
+</deflist>
+
+<img alt="CompleteExampleForStateMachineDiagram.png" src="CompleteExampleForStateMachineDiagram.png" thumbnail="true"/>
+</procedure>
+
+## Introduction to State Machines: Transition-Oriented View
 <p>This last concept is simple, it involves handling signals (receiving and sending) to represent the process of the 
 state diagram, it is about <b><code>integrating both signals nd states</code></b>
 </p>
+<p>In this diagramming flavour, what we have is that transitions are handled through <b><code>an activity diagram's 
+signal blocks
+</code></b>, for example, we can have a signal receiver node or signal outputting line to emphasize transitions and 
+the inputs of transitions.</p>
+<procedure title="Example of Transition-Oriented View">
+
+<img alt="ExampleTransitionOrientedView.png" 
+src="ExampleTransitionOrientedView.png" thumbnail="true"/>
+</procedure>
+
+### Transition-Oriented View: Protocol State Machines
+<p>Protocol state machines are simplifications of the behavioral state machines. As such, these 
+do not show various components in their states, like <b><code>entry, exit or do 
+activities</code></b>. They, however, do show the legal sequence of events and resulting states. 
+</p>
+<note>They tend to represent an external view of a server class, as seen by a client using 
+that server class. For this reason, <b><code>they are useful to model and depict 
+communication protocols like TCP, or database connections</code></b></note>
