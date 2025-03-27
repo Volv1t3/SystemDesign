@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Class #1 ― Introduction to DevOps" id="Class-1-―-Introduction-to-DevOps">
+
+    <tip>The following file contains introductory information to DevOps (Development Operations), definitions, etc. THe idea is to showcase
+    an introduction to the concepts that entail devops, attempting to guide us in the process of DevOps while also teaching
+    us about a different aspect of computer science and software development</tip>
+
+    <chapter level="2" title="Introduction to DevOps ― What is DevOps?">
+        <p>DevOps is the combinations of the words <b><code>Development and Operations</code></b>, which focuses on binding the world of <i>
+            IT operations along with software development.
+        </i> The idea is to reduce the disconnect between the traditional development cycles, development models, etc., bridging
+        the gap between the software maintainers and the software developers.</p>
+        <p>Before, traditional software development models often lead to slow releases and <b><code>long development cycles</code></b>,
+        as well as insufficient collaborations between teams. Tools like <b><code>Docker, Kubernetes, as well as Git, etc.</code></b>,
+        are the bread and butter of the DevOps tool chest.</p>
+        <note>
+            <p>DevOps addresses these challenges by <b><code>automating workflows</code></b> and enabling
+                faster, more reliable deployments
+            </p>
+        </note>
+        <chapter level="3" title="What is DevOps? ― Core principles">
+            <p>The following are the core principles of DevOps</p>
+            <procedure title="Core Principles of DevOps" id="core_principles_of_dev_ops">
+                <list type="decimal">
+                    <li><b><code>Collaboration &amp; Communication</code></b>: breaking down silos between Dev and Ops teams</li>
+                    <li><b><code>Automation</code></b>: reduces manual intervention in software delivery</li>
+                    <li><b><code>Continuous Integration &amp; Continuous Deployment (CI/CD)</code></b>: ensures quick and reliable code
+                        integration and releases</li>
+                    <li><b><code>Monitoring &amp; Feedback Loops</code></b>: provides real time insight into system performance</li>
+                    <li><b><code>Infrastructure as Code (IaC)</code></b>: enables scalable, and repeatable infrastructure management
+                        <note><p>This involves the creation of code scripts, manipulation scripts, etc that are usable and repeatable to
+                            communicate and replicate development environments, server environments, etc.</p></note>
+                    </li>
+                </list>
+            </procedure>
+        </chapter>
+        <chapter title="What is DevOps? ― Why Docker and Git For DevOps?"
+                 id="what_is_dev_ops_why_docker_and_git_for_dev_ops_"
+                 level="3">
+            <p>Docker and Git are useful as they allow for <b><code>consistency maintaining across environments</code></b>, ensuring that applications
+                run identically across different <b><code>development, testing, and production environments</code></b></p>
+            <p>In addition, collaboration, version tracking and rollback capabilities are critical for applications whose development cycles
+                are short, or where changes are done rapidly.</p>
+            <p>The most important path, or basic path rather is the workflow between docker and git.</p>
+            <chapter title="Why Docker and Git For DevOps? ― Docker &amp; Git Workflow"
+                     id="why_d_ocker_and_git_for_dev_ops_docker_amp_git_workflow"
+                     level="4">
+                <p></p>
+            </chapter>
+            <chapter title="Why Docker And Git For DevOps? ― Benefits of Using Docker and Git In DevOps"
+                     id="why_docker_and_git_for_dev_ops_benefits_of_using_docker_and_git_in_dev_ops"
+                     level="4">
+                <p>
+                    Improved collaboration, faster deployment, scalable infrastructure, better code quality.
+                </p>
+            </chapter>
+        </chapter>
+        <p>Software as infrastructure goes here</p>
+    </chapter>
+
+
+
+</topic>

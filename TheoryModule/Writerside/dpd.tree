@@ -20,6 +20,9 @@
         <toc-element topic="Class-7-―-State-Machines-―-Monday-Mar-10th.md"/>
         <toc-element topic="Class-8-―-Class-Diagrams-―-Monday-Mar-17th.topic"/>
     </toc-element>
+    <toc-element toc-title="Unit Two">
+        <toc-element topic="Class-1-―-Introduction-to-DevOps.topic"/>
+    </toc-element>
     <toc-element toc-title="Project Descriptions">
         <toc-element topic="Project-1-―-Pizza-Delivery-System.md"/>
         <toc-element topic="Project-1-―-Part-2―-Pizza-Delivery-System.topic"/>

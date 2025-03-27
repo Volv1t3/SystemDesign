@@ -197,9 +197,9 @@ and redirects them to the <b><code>"My Shopping Cart"</code></b> view.</p>
 <img alt="TrackMyOrderStatusUpdatedRBD.png" 
 thumbnail="true"
 src="TrackMyOrderStatusUpdatedRBD.png"/>
-<img alt="TrackActiveOrderStatusSEQ.png" 
+<img alt="TrackMyOrderStatusSEQ.png" 
 thumbnail="true"
-src="TrackActiveOrderStatusSEQ.png"/>
+src="TrackMyOrderStatusSEQ.png"/>
 <img alt="TrackMyOrderStatusSTT.png" 
 thumbnail="true"
 src="TrackMyOrderStatusSTT.png"/>
@@ -462,6 +462,7 @@ proceeding.</p>
 <img alt="ConfigureDeliveryZonesSEQ.png" 
 thumbnail="true"
 src="ConfigureDeliveryZonesSEQ.png"/>
+
 <img alt="ConfigureDeliveryZonesSTT.png" 
 thumbnail="true"
 src="ConfigureDeliveryZonesSTT.png"/>
