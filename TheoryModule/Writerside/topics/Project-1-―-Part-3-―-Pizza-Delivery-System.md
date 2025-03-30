@@ -542,5 +542,84 @@ src="ProcessRefundRequestSTT.png"/>
 
 ## Pizza Delivery System ― Class Diagrams
 <p>
-
+The last step in this journey of object-oriented software design, is the 
+creation of a fully fledged and expanded class diagram. The idea behind this 
+class diagram is showing the parameters, methods, and interconnections as 
+close as possible to a language implementation. We have gone from structural 
+classes, design classes, and have refined our use cases, diagrams, and 
+understaing of the system to the point when we can now produce a class 
+diagram that represents the overarching system organization we strived to 
+design.
 </p>
+<p>Developing this model was not easy, as it required handling all of our 
+use cases, scouring over them to find all possible methods and parameters 
+that we might require (<b><code>For this section, at least, I 
+went over all use cases again and extracted methods and 
+parameters such that we had continuity even if the diagrams do 
+not cover all use cases</code></b>). With this information, several 
+refinements were made to the original domain model that we had, as this 
+already contained the structural components that we required to be grouped in 
+subsystems and modules.</p>
+<p>With this base, we updated each of the classes and added more references 
+to implementation details that would later come if we were implementing this 
+in a real programming language. As we have had more experience with Java 
+over our university years, we developed the model such that we used the 
+syntax, collections API and other structural components of the language in 
+our diagram, while retaining some flexibility in our design.
+</p>
+<note><p>Attentive readers will notice, when reviewing the diagram, 
+that many Android concepts, like Fragments, Bundles and Activities 
+have been used here. These provided a much more concise way of 
+defining the model and the methods that we required, as it is much 
+easier to think of a <b><code>Bundle</code></b> being passed in the 
+UI's <b><code>Activities</code></b>, instead of retyping all of the 
+data that would be required to pass between views.</p>
+<p>In addition, networking concepts and database concepts have been 
+used to streamline the representation of server or microservice 
+connections that any view or class would require underneath.</p></note>
+<p>The use of the MVC pattern as a binding concept between our classes and 
+each view, as well as the use of Android components, information transfer 
+concepts, and Java's NET package classes, allowed us to reinforce the feel 
+of the system as an implementable system with its methods and parameters 
+defined, ready to become code</p>
+<p>Of course, the work done in the use cases cannot be understated here, he 
+work we have carried out redefining them and centering them such that they 
+made sense with respect to the requirements we had, as well as with the 
+overall domain model we defined, made for a quick and simple transition from 
+diagrams to classes.
+</p>
+<p>Each method and parameter found a home within our classes, and in the 
+case we had to articulate new ones or include new parameters, all of them 
+were added such that our model was coherent and represent a high cohesion 
+between classes instead of tight coupling</p>
+<note><p>This is not to say that no classes show coupling, some 
+classes like the GPSSystem and CellularConnection require coupling as one 
+depends upon the other, even so, we attempted to make the connection as 
+versatile as possible, trying to decouple state in favor of a feedback loop 
+representation of connections and state transitions
+</p></note>
+<p>The following is the finalized class diagram produced for this project, 
+while it is large, it represents every possible class, parameter and method 
+that might be required in an initial foundation coding of this application.</p>
+<procedure title="Pizza Delivery System ― Class Diagram" 
+id="pizza_delivery_system_class_diagram">
+<note><p>If you are trying to view this image on a browser here are 
+two things you can do:</p>
+<list>
+<li>If you are using <b><code>Google Chrome</code></b>, right click on the 
+image and view on another tab, scrolling in allows you to see the image in 
+full detail</li>
+<li>If you are using <b><code>Edge</code></b>, double click 
+<b><code>Control</code></b> and it will open the <b><code>Edge 
+Image Viewer</code></b>, this will allow you to view the image and zoom in. 
+Alternatively, follow the steps for Google and open it in another tab with 
+the same steps.
+</li>
+</list>
+</note>
+
+
+<img alt="ClassDiagramFinal.png" 
+thumbnail="true"
+src="ClassDiagramFinal.png"/>
+</procedure>
