@@ -3,10 +3,38 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Class #8 ― Class Diagrams ― Monday Mar 17th" id="Class-8-―-Class-Diagrams-―-Monday-Mar-17th">
+       title="Class #8 ― Class Diagrams ― Monday Mar 17th, Monday Mar 31st"
+       id="Class-8-―-Class-Diagrams-―-Monday-Mar-17th">
 
     <tip>
         <p>The present file will contain information regarding Class Diagrams, their introduction and their defining
         characteristics</p>
     </tip>
+    <chapter level="2" title="Git Basic Status, Action, and Terminology">
+        <p>Branching is one of the most important topics covered in Git, they allow any programmer to have a copy of the code,
+        allowing them to modify their own copies of the application where changes and testing can be done, <b><code>while leaving
+            the HEAD, or the main product intact</code></b>. Since a commit represents a point in time, a branch can represent a series of commits.</p>
+        <p>A branch can have different commit histories with respect to the HEAD and even other branches in the same repository, the idea would be that
+        they are always in sync with the main branch but different form each other. Branches <b><code>can be merged together</code></b>,
+        and incoming changes </p>
+        <p>The command <b><code>git switch /-c</code></b> allows you to a) switch to an already existing branch, or switch and create
+        a branch that you are defining. Staging is a key concept of Git which indicates that you are putting files within
+         the index (using commands like <b><code>add</code></b>). </p>
+        <p>Merging branches are usually done with a branch to the master, the last commit on the branch is fused together with the
+        last commit in the main branch. Collisions and merge problems can arise. When it comes to the <b><code>Fast-Forward</code></b>
+        git message, what is happening is that you have more than one commit of different between the branch and the main, which forces the head to merge with
+        the <b><code>latest commit in the history</code></b></p>
+        <p>Merging master into our own branch is useful to bring to our branch changes that have come up from other branches.</p>
+        <note>
+            <p>If git cannot perform a fast-forward merge, it creates a merge commit and prompts the developer to write
+                a commit message. If there are any conflicts, the developer has to resolve them and create  a <b><code>commit </code></b></p>
+        </note>
+
+        <note>
+            <p>Git allows the user to reset committed changes through three areas of Git. These are oriented to three areas in commit
+            <b><code>git index: area that stores the file changes</code></b>, <b><code>object database: are where changes and code are stored</code></b>,
+            and <b><code>working directory: your codebase</code></b></p>
+            <p></p>
+        </note>
+    </chapter>
 </topic>

@@ -540,6 +540,315 @@ src="ProcessRefundRequestSTT.png"/>
 </deflist>
 </procedure>
 
+## All Diagrams Required ― External Service and Subsystem Actors
+<procedure title="Use Case Listing ― Service Actors ― Robustness Diagrams">
+<deflist type="full" collapsible="true">
+<def title="GPS System Service Use Cases">
+<deflist type="full" collapsible="true">
+    <def title="Retrieve Driver Location">
+    <list>
+        <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
+            <p>
+                The <b><code>DeliveryManagementSubsystem</code></b> solicits the location of a driver. The <b><code>GPSSystem</code></b> 
+                consults its synchronization data to obtain the last location registered in the <b><code>DeliveryTracking</code></b>. 
+                Then, it establishes connection with the <b><code>CellularNetwork</code></b> to contact the driver's GPS device. 
+                Upon receiving the current coordinates, it updates the <b><code>DeliveryTracking</code></b>, and synchronizes this data 
+                with the <b><code>DeliveryManagementSubsystem</code></b>. The <b><code>DeliveryForecastService</code></b> receives 
+                the update to recalculate the ETA if necessary.
+            </p>
+        </li>
+        <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+            <p>
+                When the system cannot establish connection with the <b><code>CellularNetwork</code></b> or the GPS device doesn't 
+                respond, the <b><code>GPSSystem</code></b> falls back to the last valid location stored in the 
+                <b><code>DeliveryTracking</code></b> and logs the incident in the <b><code>DeliveryMetricRecord</code></b>. 
+                Simultaneously, it notifies the <b><code>DeliveryManagementSubsystem</code></b> about the failure and the 
+                <b><code>DeliveryAnalyzer</code></b> processes this information to adjust its predictive models, thus keeping 
+                route calculations and estimated time updated.
+            </p>
+        </li>
+    </list>
+<img alt="TrackingDeliveryDriverLocation.png" src="TrackingDeliveryDriverLocation.png" thumbnail="true"/>
+    <img alt="RetrieveDriverLocationROB.png" src="RetrieveDriverLocationROB.png" thumbnail="true"/>
+    <img alt="RetrieveDriverLocationACT.png" src="RetrieveDriverLocationACT.png" thumbnail="true"/>
+<img alt="RetrieveDriverLocationSEQ.png" thumbnail="true"  src="RetrieveDriverLocationSEQ.png"/>
+<img alt="RetrieveDriverLocationSTT.png" 
+thumbnail="true"
+src="RetrieveDriverLocationSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Security Manager Service Use Cases">
+<deflist type="full" collapsible="true">
+    <def title="Validate User Credentials">
+        <list>
+            <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
+                <p>
+                    The <b><code>SecurityManager</code></b> receives the user's credentials and proceeds to review them. First, it 
+                    searches for username matches in the database and then compares the password hashes using the 
+                    <b><code>AuthenticatorService</code></b>. If the credentials are valid, the system logs all information related 
+                    to this login attempt in the <b><code>CustomerManagementSubsystem</code></b>. Additionally, a 
+                    <b><code>SessionToken</code></b> is created for the user. Finally, the system returns an internal flag and the 
+                    <b><code>SessionToken</code></b> to the caller, indicating successful validation.
+                </p></li>
+            <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+                <p>
+                    During username review, if the system detects an incorrect, blocked, or absent username in the database, the 
+                    <b><code>SecurityManager</code></b> generates a security alert. This alert notifies the caller for additional 
+                    error processing. On the other hand, if during the password hash review an incorrect hash is identified, the 
+                    system activates an internal flag and notifies the caller for additional processing.
+                </p></li>
+        </list>
+        <img src="UserLoginAttemptTracking.png" alt="UserLoginAttemptTracking.png" thumbnail="true"/>
+        <img alt="UserLoginAttemptTrackingROB.png" src="UserLoginAttemptTrackingROB.png" thumbnail="true"/>
+        <img alt="UserLoginAttemptTrackingACT.png" src="UserLoginAttemptTrackingACT.png" thumbnail="true"/>
+        <img alt="userLoginAttemptTrackingSEQ.png" 
+        thumbnail="true"
+        src="userLoginAttemptTrackingSEQ.png"/>
+        <img alt="UserLoginAttemptTrackingSTT.png" 
+        thumbnail="true"
+        src="UserLoginAttemptTrackingSTT.png"/>
+    </def>
+</deflist>
+</def>
+<def title="Payment Processing Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Refund Processing">
+   <list>
+        <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
+            <p>
+                The Customer Service receives the refund request from the 
+Customer. The <b><code>CustomerManager</code></b> verifies the 
+<b><code>Order</code></b> 
+details and eligibility according to the policies defined in <b><code>RefundPolicy</code></b>. 
+If validation is successful, the <b><code>PaymentProcessingSystem</code></b> 
+                executes the refund using the 
+<b><code>PaymentMethod</code></b>data. Finally, a 
+confirmation is sent to the user, and the refund status is updated.
+            </p></li>
+        <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+            <p>
+                If the <b><code>CustomerManager</code></b> denies the request and records the reasons, the Customer is then notified with a message 
+                detailing the reasons for the denial, and the refund status is updated.
+            </p></li>
+    </list>
+    <img alt="RefundProcessing.png" src="RefundProcessing.png" thumbnail="true"/>
+    <img alt="RefundProcessingROB.png" src="RefundProcessingROB.png" thumbnail="true"/>
+    <img alt="RefundProcessingACT.png" src="RefundProcessingACT.png" thumbnail="true"/>
+<img alt="RefundProcessingSEQ.png" 
+thumbnail="true"
+src="RefundProcessingSEQ.png"/>
+
+<img alt="RefundProcessingSTT.png" 
+thumbnail="true"
+src="RefundProcessingSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Authenticator Service Use Cases">
+<deflist type="full" collapsible="true">
+    <def title="Manage Token Expiry and Renewal">
+    <list>
+        <li><b><format color="CornFlowerBlue">Main Flow</format></b>:
+            <p>
+                The <b><code>AuthenticatorService</code></b> constantly monitors the validity of the <b><code>SessionToken</code></b> 
+                (every 10 minutes as per design). When it detects that the token is about to expire, it requests a renewal from the 
+                <b><code>SecurityManager</code></b>. This verifies the user's activity through the 
+                <b><code>CustomerManagementSubsystem</code></b> by consulting the <b><code>customerValidationLogs</code></b>. 
+                If the activity is valid, the <b><code>SecurityManager</code></b> generates a new <b><code>SessionToken</code></b> 
+                and associates it with the user. The system continues the session with the new token.
+            </p></li>
+        <li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+            <p>
+                If the renewal fails (due to user inactivity or errors in the <b><code>AuthenticatorService</code></b>), the 
+                <b><code>SecurityManager</code></b> invalidates the existing <b><code>SessionToken</code></b> and notifies the 
+                <b><code>CustomerManagementSubsystem</code></b> to record the logout in the <b><code>customerValidationLogs</code></b>. 
+                The user is redirected to the initial authentication flow. If the token is not about to expire, the 
+                <b><code>AuthenticatorService</code></b> maintains the active session without intervention.
+            </p></li>
+    </list>
+    <img alt="ManageTokeExpiryAndRenewal.png" src="ManageTokeExpiryAndRenewal.png" thumbnail="true"/>
+    <img alt="ManageTokenExpiryAndRenewalROB.png" src="ManageTokenExpiryAndRenewalROB.png" thumbnail="true"/>
+    <img alt="ManageTokenExpiryAndRenewalACT.png" src="ManageTokenExpiryAndRenewalACT.png" thumbnail="true"/>
+<img alt="ManageTokenExpiryAndRenwealSEQ.png" 
+thumbnail="true"
+src="ManageTokenExpiryAndRenwealSEQ.png"/>
+<img alt="ManageTokenExpiryAndRenewalSTT.png" 
+thumbnail="true"
+src="ManageTokenExpiryAndRenewalSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Ingredient Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Statistics and Predictions">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>:
+<p>
+The system receives a AI-Driven Report request produced by an event in the user facing "Inventory Management" interface. The
+system relays the call to the underlying <b><code>InventoryForecastService</code></b>. The underlying 
+<b><code>InventoryForecastService</code></b> relays the processing call to its <b><code>OrderAnalyzer</code></b> using 
+<b><code>RequestAnalysis()</code></b>. The <b><code>OrderAnalyzer</code></b> uses the "Retrieve information from orders"
+use case to access complete orders from the <b><code>DatabaseManagementSystem</code></b>.
+The <b><code>OrderAnalyzer</code></b> compiles and analyzes the ingredient quantities based on prediction
+guidelines, wraps the information in an <b><code>ForecastAnalysis</code></b>, and returns it to
+the <b><code>InventoryForecastService</code></b>.
+The <b><code>InventoryForecastService</code></b> then wraps the information in an <b><code>APIRequest</code></b> and sends the
+call to the Inventory Forecast Service actor using an <b><code>InventoryForecastService</code></b> interface,
+entering a waiting for response state and launching a receiver interface.
+When <b><code>InventoryForecastService</code></b> receives a response, it proceds to extract the stored 
+<b><code>RawInventoryForecastReport</code></b> from the response. The <b><code>InventoryForecastService</code></b> processes and
+formats it, converting it into an <b><code>InventoryForecastReport</code></b>, which is uploaded to the database using "Submit to
+Database" use case and returned to the "Inventory Management" interface.
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>:
+<p>
+Database connection failure: For database related use cases calls, the system will attempt to connect to the underlying
+<b><code>DatabaseManagementSystem</code></b> at most three times. After three unsuccessful attempts the system will return a failure state signal.
+API Call Failure / Timeout: If the request to the AI service times out or returns an error, the system will retry the request at most 3
+times. After three unsuccessful attempts the system will return a failure state signal.
+</p></li>
+</list>
+<img alt="RequestStatisticsAndPredictions.png" 
+src="RequestStatisticsAndPredictions.png" thumbnail="true"/>
+<img alt="RequestStatisticsAndPredictionsROB.png" 
+src="RequestStatisticsAndPredictionsROB.png" thumbnail="true"/>
+<img alt="RequestStaticsAndPredictionsACT.png" 
+src="RequestStaticsAndPredictionsACT.png" thumbnail="true"/>
+<img alt="RequestStatisticsAndPredictionsROBUpdated.png" 
+thumbnail="true"
+src="RequestStatisticsAndPredictionsROBUpdated.png"/>
+<img alt="RequestStatisticsAndPredictionsSTT.png" 
+thumbnail="true"
+src="RequestStatisticsAndPredictionsSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Inventory Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request Storage Quantity and Replenishment Estimation">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>:
+<p>
+The system receives a AI-Driven Report request produced by an event in the user facing "Inventory Management" interface. The
+system relays the call to the underlying <b><code>InventoryForecastService</code></b>. The underlying
+<b><code>InventoryForecastService</code></b> relays the processing call to its <b><code>OrderAnalyzer</code></b>. The <b><code>OrderAnalyzer</code></b> 
+uses the "Retrieve information from orders" use case to access complete orders from the <b><code>DatabaseManagementSystem</code></b>.
+The <b><code>OrderAnalyzer</code></b> compiles and analyzes the ingredient quantities based on prediction guidelines, wraps the information in
+an <b><code>ForecastAnalysis</code></b>, and returns it to the <b><code>InventoryForecastService</code></b>.
+The <b><code>InventoryForecastService</code></b> then wraps the information in an <b><code>APIRequest</code></b> and sends the
+call to the Inventory Forecast Service actor using an <b><code>InventoryForecastService</code></b> interface,
+entering a waiting for response state and launching a receiver interface.
+When <b><code>InventoryForecastService</code></b> receives a response, it proceds to extract the stored 
+<b><code>RawInventoryForecastReport</code></b> from the response. The <b><code>InventoryForecastService</code></b> processes and
+formats it, converting it into an <b><code>InventoryForecastReport</code></b>, which is uploaded to the database using "Submit to
+Database" use case and returned to the "Inventory Management" interface.
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>:
+<p>
+Database connection failure: For database related use cases calls, the system will attempt to connect to the underlying
+<b><code>DatabaseManagementSystem</code></b> at most three times. After three unsuccessful attempts the system will return a failure state signal.
+API Call Failure / Timeout: If the request to the AI service times out or returns an error, the system will retry the request at most 3
+times. After three unsuccessful attempts the system will return a failure state signal.
+</p></li>
+</list>
+<img alt="RequestStorageQuantityAndReplenishmentEstimationRobust.png"
+src="RequestStorageQuantityAndReplenishmentEstimationRobust.png" thumbnail="true"/>
+<img alt="RequestStorageQuantityEstimationACT.png" src="RequestStorageQuantityEstimationACT.png"
+thumbnail="true"/>
+<img alt="RequestStorageQuantityEstimationSEQ.png" 
+thumbnail="true"
+src="RequestStorageQuantityEstimationSEQ.png"/>
+<img alt="RequestStorageQuantityEstimationSTT.png" 
+thumbnail="true"
+src="RequestStorageQuantityEstimationSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Delivery Forecast AI Service Provider Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Request AI-Optimized Delivery Route">
+<list>
+<li><b><format color="CornFlowerBlue">Base Sequence</format></b>:
+<p>
+The system receives a AI-Driven Report request produced by an event in the user facing "Available Deliveries Near You" interface. The system relays the call to the underlying <b><code>DeliveryForecastService</code></b>. The underlying <b><code>DeliveryForecastService</code></b> relays the processing call to its <b><code>DeliveryAnalyzer</code></b> using RequestAnalysis(). The <b><code>OrderAnalyzer</code></b> uses the "Retrieve information from orders" use case to access complete orders from the <b><code>DatabaseManagementSystem</code></b>. The <b><code>DeliveryAnalyzer</code></b> compiles and analyzes the current deliveries and a set of deliveries based on prediction guidelines, wraps the information in an <b><code>ForecastAnalysis</code></b>, and returns it to the <b><code>DeliveryForecastService</code></b>. The <b><code>DeliveryForecastService</code></b> then wraps the information in an <b><code>APIRequest</code></b> and sends the call to the Delivery Forecast Service actor using an <b><code>DeliveryForecastService</code></b> interface, entering a waiting for response state and starting a Timer. When <b><code>DeliveryForecastService</code></b> receives a response, it proceds to extract the stored <b><code>RawDeliveryForecastReport</code></b> from the response. The <b><code>DeliveryForecastService</code></b> processes and formats it using FormatRawDelivery(raw), converting it into an <b><code>RouteOptimizationRecord</code></b>, which is returned to the "Available Deliveries Near You" interface
+</p></li>
+<li><b><format color="CornFlowerBlue">Branch Sequence</format></b>:
+<p>
+Database connection failure: For database-related use cases calls, the system will attempt to connect to the underlying <b><code>DatabaseManagementSystem</code></b> at most three times. After three unsuccessful attempts the system will return a failure state signal.
+API Call Failure / Timeout: If the request to the AI service times out or returns an error, the system will retry the request at most 3 times. After three unsuccessful attempts the system will return a failure state signal.
+</p></li>
+</list>
+<img alt="RequestRouteOptimization.png" src="RequestRouteOptimization.png" thumbnail="true"/>
+<img alt="RouteOptimizationROB.png" src="RouteOptimizationROB.png" thumbnail="true"/>
+<img alt="RouteOptimizationACT.png" src="RouteOptimizationACT.png" thumbnail="true"/>
+<img alt="RoutOptimizationROBUpdated.png" 
+thumbnail="true"
+src="RoutOptimizationROBUpdated.png"/>
+<img alt="RouteOptimizationSEQ.png" 
+thumbnail="true"
+src="RouteOptimizationSEQ.png"/>
+
+<img alt="RouteOptimizationSTT.png" 
+thumbnail="true"
+src="RouteOptimizationSTT.png"/>
+</def>
+</deflist>
+</def>
+<def title="Cellular Network Service Use Cases">
+<deflist type="full" collapsible="true">
+<def title="Communicate Route">
+<list>
+<li><b><format color="CornFlowerBlue">Normal Flow</format></b>:
+<p>
+When an <b><code>OptimizedRouteRecord</code></b> is produced by the Request AI Optimized Delivery Route, the
+record containing the route must be handled to the Delivery driver. For this the system will create an 
+<b><code>NetworkCall</code></b> for the cellular network by calling <b><code>messageConstructor</code></b>'s 
+<b><code>communicateRoute</code></b> method with <b><code>optimizedRouteRecord</code></b>
+and the order's <b><code>DeliveryTracking</code></b> as arguments. The resulting <b><code>NetworkCall</code></b> will be sent to
+<b><code>CellularNetwork</code></b>, which in turn will enqueue it in <b><code>CallSenderQueue</code></b> using
+<b><code>addToSendQueue()</code></b>.
+<br/>
+The <b><code>CallSenderQueue</code></b> then will iterative send the stored <b><code>NetworkCalls</code></b> using <b><code>sendCall()</code></b>,
+which communicates to the cellular network using the API interface, and starts a timer.
+The cellular network is then expected to notify <b><code>CellularNetworkConnection</code></b> the message
+reception. When the notification arrives, the <b><code>CellularNetwork</code></b> will format the information in a
+system-understandable way. If a succesful confirmation is received before a timeout occurs,
+<b><code>CallSenderQueue</code></b> will continue to send a new message.
+</p></li>
+<li><b><format color="CornFlowerBlue">Alternative Flow</format></b>:
+<p>
+If a timeout occurs before receiving a notification, the System will request the resending of the message up to
+3 times.
+</p></li>
+<li><b><format color="CornFlowerBlue">Exception Flow</format></b>:
+<p>
+If the cellular network notifies a fallen network error, <b><code>CellularNetwork</code></b> will inform the situation by using
+<b><code>signalFailureState()</code></b>. If resend message fails after 3 failed attempts, the system will inform this
+using <b><code>signalFailureState()</code></b>
+</p></li>
+</list>
+<img alt="CommunicationUseCase.png" src="RequestRouteOptimization.png"  thumbnail="true"/>
+<img alt="CommunicateRouteROBUpdated.png" 
+thumbnail="true"
+src="CommunicateRouteROBUpdated.png"/>
+<img alt="CommunicateRouteACTUpdated.png" 
+thumbnail="true"
+src="CommunicateRouteACTUpdated.png"/>
+<img alt="CommunicateRouteSEQ.png" 
+thumbnail="true"
+src="CommunicateRouteSEQ.png"/>
+
+<img alt="CommunicateRouteSTT.png" 
+thumbnail="true"
+src="CommunicateRouteSTT.png"/>
+</def>
+</deflist>
+</def>
+</deflist>
+</procedure>
+
+
 ## Pizza Delivery System ― Class Diagrams
 <p>
 The last step in this journey of object-oriented software design, is the 
@@ -606,7 +915,7 @@ id="pizza_delivery_system_class_diagram">
 <note><p>If you are trying to view this image on a browser here are 
 two things you can do:</p>
 <list>
-<li>If you are using <b><code>Google Chrome</code></b>, right click on the 
+<li>If you are using <b><code>Google Chrome</code></b>, right-click on the 
 image and view on another tab, scrolling in allows you to see the image in 
 full detail</li>
 <li>If you are using <b><code>Edge</code></b>, double click 
@@ -617,7 +926,6 @@ the same steps.
 </li>
 </list>
 </note>
-
 
 <img alt="ClassDiagramFinal.png" 
 thumbnail="true"

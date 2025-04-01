@@ -6,7 +6,7 @@
        - Carlos Flores Villacís      [00329746],
        - Santiago Arellano Jaramillo [00328370].
     2. Fecha de Entrega:
-       - Martes 11 de Marzo, 2025
+       - Lunes 31 de Marzo, 2025
     3. Nombre del Proyecto:
        - Domain Modeling: Pizza Delivery System.
     4. Link de Acceso a la Web del Proyecto
